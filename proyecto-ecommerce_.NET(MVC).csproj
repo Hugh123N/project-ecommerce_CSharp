@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>proyecto_ecommerce_.NET_MVC_</RootNamespace>
+    <UserSecretsId>ebd4bc78-afac-4dad-91e2-e95e79580cda</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

@@ -3,6 +3,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//conexion a base de datos
+var secret = builder.Configuration["ConexionString"];
+Console.WriteLine(secret);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
