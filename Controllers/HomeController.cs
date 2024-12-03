@@ -1,20 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using proyecto_ecommerce_.NET_MVC_.Models;
 using System.Diagnostics;
+//implementacion de dependencias
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly EcommerceCursoContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, EcommerceCursoContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
-        {
+        {   
+            List<Producto> products = _context.Productos.ToList();
             return View();
         }
 

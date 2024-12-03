@@ -1,11 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using proyecto_ecommerce_.NET_MVC_.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-//conexion a base de datos
-var secret = builder.Configuration["ConexionString"];
-Console.WriteLine(secret);
+//conexion a base de datos desde secretos de usuario
+//var secret = builder.Configuration["ConexionString"];
+builder.Services.AddDbContext<EcommerceCursoContext>(options => options.UseSqlServer(builder.Configuration["ConexionString"]));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
