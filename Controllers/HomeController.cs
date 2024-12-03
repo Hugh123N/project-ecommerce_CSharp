@@ -20,7 +20,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
         public IActionResult Index()
         {   
-            List<Producto> products = _context.Productos.ToList();
+            //List<Producto> products = _context.Productos.ToList();
             return View();
         }
 
