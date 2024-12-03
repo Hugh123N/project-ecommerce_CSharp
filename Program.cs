@@ -7,7 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //conexion a base de datos desde secretos de usuario
-//var secret = builder.Configuration["ConexionString"];
+/*var secret = builder.Configuration["ConexionString"];
+Console.Write(secret);*/
 builder.Services.AddDbContext<EcommerceCursoContext>(options => options.UseSqlServer(builder.Configuration["ConexionString"]));
 
 var app = builder.Build();
