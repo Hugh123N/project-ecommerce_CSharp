@@ -1,11 +1,14 @@
 html {
   font-size: 14px;
+  margin:0;
 }
 
 @media (min-width: 768px) {
   html {
     font-size: 16px;
+
   }
+   
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -17,49 +20,52 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
-/*cavecera  nav*/
 
+/*cavecera  nav*/
+.nav-cabecera {
+    top:0;
+    left:0;
+    width: 100%;
+    height:65px;
+    display: flex;
+    z-index: 50;
+    position: fixed;
+}
+nav ul li a{
+    cursor:pointer;
+}
 
 /**********************cuerpo**************************/
 .cuerpo {
     width: 100%;
     height: 100%;
+    margin-top:65px;
     display: flex;
     flex-direction: row;
 }
 
 .contenido-menu {
+    padding-bottom:65px;
     width: 18%;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    z-index:20;
+    position:fixed;
 }
 
-    .contenido-menu .menu-container {
+.menu-container {
         width: 100%;
         height: 100%;
-        background-color: rgb(255, 255, 255);
         display: flex;
         flex-direction: column;
-    }
+}
 
 .menu-container ul {
     display: flex;
     flex-direction: column;
     padding-left: 5px;
 }
-
-.menu-container li a {
-    background: #b4c8ff;
-    color: rgb(51, 37, 37);
-    height: 200px;
-}
-
-
 
 li {
     width: auto;
@@ -72,23 +78,21 @@ li {
 .contenido-menu .menu-container a {
     width: 100%;
     height: 100%;
-    background-color: #eef9ff;
     border-radius: 10px;
     border: none;
     font-weight: 600;
     font-size: 16px;
-    color: #616161;
+    color: #8f8f8f;
     text-align: left;
     padding-left: 10px;
     cursor: pointer;
 }
 
-.underline {
-    color: #3080c8;
+.contenido-menu .menu-container a:hover{
+    color:#eef9ff;
 }
 
 summary {
-    background: #ffffff;
     height: 30px;
     border-bottom: 1px solid #b5b5b5;
     border-radius: 5px;
@@ -99,23 +103,17 @@ summary {
     cursor: pointer;
     margin: 15px;
     font-weight: 600;
-    color: #616161;
+    color: #c6c6c6;
 }
 
-    summary::marker {
-        color: #616161;
-    }
-
-button.salir {
-    background-color: #ffffff;
-    border-radius: 0;
-    height: 40px;
-    width: 80px;
-    padding-bottom: 20px;
+summary::marker {
+    color: #c6c6c6;
 }
+
 
 /*cuerpo contenido y footer*/
 #layoutSidenav_content {
+    margin-left:20%;
     width: 80%;
     height: 100%;
 }
