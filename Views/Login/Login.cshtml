@@ -1,9 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Inicio de Sesión";
+}
+
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de Sesión</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <style>
         .error-message {
@@ -63,10 +67,10 @@
                     Iniciar Sesión
                 </div>
                 <div class="card-body p-5">
-                    <form id="login-form" onsubmit="checkEmptyFields(event)">
-                        <input class="form-control mb-3" type="text" placeholder="Correo" id="username" oninput="validateInputs()" />
+                    <form id="login-form" method="post" asp-action="Login" asp-controller="Login" onsubmit="checkEmptyFields(event)">
+                        <input class="form-control mb-3" type="text" placeholder="Correo" id="username" name="username" oninput="validateInputs()" />
                         <div id="usernameError" class="error-message">El usuario debe tener entre 9 y 255 caracteres.</div>
-                        <input class="form-control mb-3" type="password" placeholder="Contraseña" id="password" oninput="validateInputs()" />
+                        <input class="form-control mb-3" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" />
                         <div id="passwordError" class="error-message">La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número.</div>
 
                         <div class="d-grid gap-2 mb-3">
@@ -84,3 +88,4 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
