@@ -7,16 +7,23 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/proyecto_ecommerce_.NET_MVC_.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 </head>
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <nav class="sb-topnav navbar navbar-expand-sm navbar-dark bg-dark nav-cabecera">
+        <!-- Sidebar Toggle-->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+        </button>
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" href="index.html">Logo</a>
-        <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
-        <!-- Navbar-->
+        <!-- Navbar--> 
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo">
         <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
+            <li class="nav-item">
+                <a class="nav-link active"><i class="fas fa-cart-plus">(<label style="color: darkorange">0</label>)</i>Carrito</a>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -27,11 +34,12 @@
                 </ul>
             </li>
         </ul>
+        </div>
     </nav>
-    <div class="cuerpo" id="layoutSidenav">
-        <div class="contenido-menu" id="layoutSidenav_nav">
-                <div class="sb-sidenav-menu menu-container">
-                    <ul>
+    <div class="cuerpo" >
+        <div class="contenido-menu ">
+            <div class="sb-sidenav-menu menu-container bg-dark">
+                    <ul id="menu">
                         <details>
                             <summary class="sb-sidenav-menu-heading">Resumen</summary>
                             <li>
@@ -56,10 +64,10 @@
                                 </a>
                             </li>
                             <li>
-                            <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
-                                Productos
-                            </a>
+                                <a class="nav-link" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                                    Productos
+                                </a>
                             </li>
                         </details>
                         <details>
@@ -102,3 +110,5 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
