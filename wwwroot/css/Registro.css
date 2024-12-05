@@ -1,23 +1,23 @@
-. {
+#registrarse {
+   text-decoration: none;
 }
 
 
 #fondoLogin {
     background: rgb(255,255,255);
-    background: -moz-linear-gradient(90deg, rgba(255,255,255,1) 35%, rgba(205,205,205,1) 45%, rgba(205,205,205,1) 55%, rgba(255,255,255,1) 65%);
-    background: -webkit-linear-gradient(90deg, rgba(255,255,255,1) 35%, rgba(205,205,205,1) 45%, rgba(205,205,205,1) 55%, rgba(255,255,255,1) 65%);
-    background: linear-gradient(90deg, rgba(255,255,255,1) 35%, rgba(205,205,205,1) 45%, rgba(205,205,205,1) 55%, rgba(255,255,255,1) 65%);
+    background: -moz-linear-gradient(90deg, rgba(255,255,255,1) 33%, rgba(60,132,150,1) 40%, rgba(60,132,150,1) 60%, rgba(255,255,255,1) 67%);
+    background: -webkit-linear-gradient(90deg, rgba(255,255,255,1) 33%, rgba(60,132,150,1) 40%, rgba(60,132,150,1) 60%, rgba(255,255,255,1) 67%);
+    background: linear-gradient(90deg, rgba(255,255,255,1) 33%, rgba(60,132,150,1) 40%, rgba(60,132,150,1) 60%, rgba(255,255,255,1) 67%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
     padding: 10% 0%;
 }
 
 #tarjetaBase {
-    border-radius: 50px;
-    background: rgb(38,29,7);
-    background: -moz-linear-gradient(90deg, rgba(38,29,7,0.520045518207283) 0%, rgba(74,73,97,0.2539390756302521) 50%, rgba(38,29,7,0.52) 100%);
-    background: -webkit-linear-gradient(90deg, rgba(38,29,7,0.520045518207283) 0%, rgba(74,73,97,0.2539390756302521) 50%, rgba(38,29,7,0.52) 100%);
-    background: linear-gradient(90deg, rgba(38,29,7,0.520045518207283) 0%, rgba(74,73,97,0.2539390756302521) 50%, rgba(38,29,7,0.52) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#261d07",endColorstr="#261d07",GradientType=1);
+    background: rgb(211,219,163);
+    background: -moz-linear-gradient(90deg, rgba(211,219,163,0.7) 0%, rgba(74,73,97,0.2539390756302521) 48%, rgba(211,219,163,0.7) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(211,219,163,0.7) 0%, rgba(74,73,97,0.2539390756302521) 48%, rgba(211,219,163,0.7) 100%);
+    background: linear-gradient(90deg, rgba(211,219,163,0.7) 0%, rgba(74,73,97,0.2539390756302521) 48%, rgba(211,219,163,0.7) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d3dba3",endColorstr="#d3dba3",GradientType=1);
 }
 
 #glass-icon {
@@ -48,7 +48,7 @@
 }
 
 .card-header {
-    background-color: #F5F5F5;
+    background-color: #ffce33;
 }
 
 .card-body {

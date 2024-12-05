@@ -16,38 +16,40 @@
 			<div class="card-body border border-secondary">
 				<!--modificar mas adelante este formulario, para que cree un usuario nuevo (el controller sera diferente, por ahora usa el mismo de LoginController)-->
 				<form id="login-form" method="post" asp-action="Login" asp-controller="Login" onsubmit="checkEmptyFields(event)" class="">
-
-					<input class="form-control mb-1  border border-light text-xl-start" type="text" placeholder="Direccion" id="direccion" name="direccion" value="" />
-					<div id="direcError" class="error-message form-text mb-1">
+					<p class="text-start">Complete cada recuadro con los datos respectivos, si falta algo se le indicará. Por cierto ni se le ocurra olvidarse 
+						la contraseña (si sabe que se va a olvidar, mejor escribalo en un papel).</p>
+					
+					<input class="form-control mb-3  border border-light text-xl-start" type="text" placeholder="Direccion" id="direccion" name="direccion" value="" />
+					<div id="direcError" class="error-message form-text mb-3">
 						La direccion debe escribirse bien, sino los pedidos NO llegarán.
 					</div>
 
-					<input class="form-control mb-1  border border-light text-xl-start" type="text" placeholder="E-mail" id="email" name="email" value="" />
-					<div id="emailError" class="error-message form-text mb-1">
+					<input class="form-control mb-3  border border-light text-xl-start" type="text" placeholder="E-mail" id="email" name="email" value="" />
+					<div id="emailError" class="error-message form-text mb-3">
 						El email no tiene mayusculas, debe llevar un arroba y un ".com" .
 					</div>
 
-					<input class="form-control mb-1  border border-light text-xl-start" type="text" placeholder="Nombres" id="nombre" name="nombre" value="" />
-					<div id="nombresError" class="error-message form-text mb-1">
+					<input class="form-control mb-3  border border-light text-xl-start" type="text" placeholder="Nombres" id="nombre" name="nombre" value="" />
+					<div id="nombresError" class="error-message form-text mb-3">
 						Escribir los nombres y apellidos separados.
 					</div>
 
-					<input class="form-control mb-1  border border-light text-xl-start" type="number" placeholder="Telefono" id="telefono" name="telefono" />
-					<div id="telefError" class="error-message form-text mb-1">
+					<input class="form-control mb-3  border border-light text-xl-start" type="text" placeholder="Telefono" id="telefono" name="telefono" />
+					<div id="telefError" class="error-message form-text mb-3">
 						Los telefonos solo tienen numeros, minimo 7 y max 13 (en el Perú solo son 9).
 					</div>
 
-					<input class="form-control mb-1  border border-light text-xl-start" type="text" placeholder="Nombre_usuario" id="username" name="username" oninput="validateInputs()" />
-					<div id="usernameError" class="error-message form-text mb-1">
+					<input class="form-control mb-3  border border-light text-xl-start" type="text" placeholder="Nombre_usuario" id="username" name="username" oninput="validateInputs()" />
+					<div id="usernameError" class="error-message form-text mb-3">
 						El usuario nuevo debe tener mínimo 9 y 255 maximo.
 					</div>
 
-					<input class="form-control mb-1  border border-light text-xl-start" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" />
+					<input class="form-control mb-3  border border-light text-xl-start" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" />
 					<div id="passwordError" class="error-message form-text">
 						La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número.
 					</div>
 
-					<div class="container-lg justify-content-center mt-3">
+					<div class="container-lg justify-content-center mt-5">
 						<div class="d-grid gap-2 mb-3">
 							<button class="btn btn-primary fs-5" type="submit" id="submitButton" disabled>Crear cuenta</button>
 						</div>
