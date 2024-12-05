@@ -4,88 +4,94 @@
 
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <style>
-        .error-message {
-            color: red;
-            display: none;
-        }
-    </style>
-    <script>
-        function validateInputs() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const submitButton = document.getElementById('submitButton');
-            const usernameError = document.getElementById('usernameError');
-            const passwordError = document.getElementById('passwordError');
+	<title>@ViewData["Title"]</title>
+	<link rel="stylesheet" href="~/css/Login.css" />
 
-            // Validar que el usuario tenga entre 9 y 255 caracteres
-            const usernamePattern = /^[a-zA-Z0-9]{9,255}$/;
+	<div class="row justify-content-center" id="fondoLogin">
+        <div class="col-lg-6">
+			<div class="card p-5 border border-dark" id="tarjetaBase">
+			<div class="card-header border border-secondary text-center fs-3 fw-bolder">
+					Iniciar Sesión
+				</div>
+				<div class="card-body border border-secondary">
+					<form id="login-form" method="post" asp-action="Login" asp-controller="Login" onsubmit="checkEmptyFields(event)" class="">
 
-            // Validar que la contraseña tenga al menos 8 caracteres, incluya al menos una letra mayúscula, una letra minúscula y un número
-            const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+						<input class="form-control mb-1  border border-light text-xl-start" type="text" placeholder="Nombre_usuario" id="username" name="username" oninput="validateInputs()" />
+						<div id="usernameError" class="error-message form-text mb-1">
+							El usuario debe tener entre 9 y 255 caracteres.
+						</div>
 
-            let isValid = true;
+						<input class="form-control mb-1  border border-light text-xl-start" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" />
+						<div id="passwordError" class="error-message form-text">
+							La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número.
+						</div>
+						
 
-            if (!usernamePattern.test(username)) {
-                usernameError.style.display = 'block';
-                isValid = false;
-            } else {
-                usernameError.style.display = 'none';
-            }
+					<div class="container-lg justify-content-center mt-3">
+							<div class="d-grid gap-2 mb-3">
+							<button class="btn btn-primary fs-5" type="submit" id="submitButton" disabled>Iniciar Sesión</button>
+							</div>
+							<div class="d-grid gap-2">
+							<button class="btn btn-danger fs-5" type="button" id="buttomCancelar" onclick="window.location.href = 'https://www.google.com.pe/?gfe_rd=cr&dcr=0&ei=TzvEWfbuCZCz-wWGtbZQ';">Cancelar</button>
+							</div>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+			<br />
 
-            if (!passwordPattern.test(password)) {
-                passwordError.style.display = 'block';
-                isValid = false;
-            } else {
-                passwordError.style.display = 'none';
-            }
+			<div class="container-lg p-3" id="glass-icon">
+				<h3 class="text-white fs-5" onclick="">Si no tienes cuenta....puedes registrarte gratis :D .</h3>
+				<button class="btn btn-outline-success"><a asp-area="" asp-controller="Login" asp-action="Registro">Registrarse</a></button>
+			</div>
 
-            submitButton.disabled = !isValid;
-        }
-
-        function checkEmptyFields(event) {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            if (username.trim() === '' || password.trim() === '') {
-                alert('Debe completar ambos campos.');
-                event.preventDefault();
-            }
-        }
-    </script>
-</head>
-<body style="background-color: gainsboro">
-    <div class="row mt-5 justify-content-center p-7">
-        <div class="col-sm-4">
-            <div class="card">
-                <div class="card-header">
-                    Iniciar Sesión
-                </div>
-                <div class="card-body p-5">
-                    <form id="login-form" method="post" asp-action="Login" asp-controller="Login" onsubmit="checkEmptyFields(event)">
-                        <input class="form-control mb-3" type="text" placeholder="Correo" id="username" name="username" oninput="validateInputs()" />
-                        <div id="usernameError" class="error-message">El usuario debe tener entre 9 y 255 caracteres.</div>
-                        <input class="form-control mb-3" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" />
-                        <div id="passwordError" class="error-message">La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número.</div>
-
-                        <div class="d-grid gap-2 mb-3">
-                            <button class="btn btn-primary" type="submit" id="submitButton" disabled>Iniciar Sesión</button>
-                        </div>
-                        <div class="d-grid gap-2 mb-3">
-                            <button class="btn btn-primary" type="button" onclick="window.location.href = 'https://www.google.com.pe/?gfe_rd=cr&dcr=0&ei=TzvEWfbuCZCz-wWGtbZQ';">Cancelar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
         </div>
-    </div>
+	</div>
+<script>
+	function validateInputs() {
+		const username = document.getElementById('username').value;
+		const password = document.getElementById('password').value;
+		const submitButton = document.getElementById('submitButton');
+		const usernameError = document.getElementById('usernameError');
+		const passwordError = document.getElementById('passwordError');
+
+		// Validar que el usuario tenga entre 9 y 255 caracteres
+		const usernamePattern = /^[a-zA-Z0-9]{9,255}$/;
+
+		// Validar que la contraseña tenga al menos 8 caracteres, incluya al menos una letra mayúscula, una letra minúscula y un número
+		const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+		let isValid = true;
+
+		if (!usernamePattern.test(username)) {
+			usernameError.style.display = 'block';
+			isValid = false;
+		} else {
+			usernameError.style.display = 'none';
+		}
+
+		if (!passwordPattern.test(password)) {
+			passwordError.style.display = 'block';
+			isValid = false;
+		} else {
+			passwordError.style.display = 'none';
+		}
+
+		submitButton.disabled = !isValid;
+	}
+
+	function checkEmptyFields(event) {
+		const username = document.getElementById('username').value;
+		const password = document.getElementById('password').value;
+
+		if (username.trim() === '' || password.trim() === '') {
+			alert('Debe completar ambos campos.');
+			event.preventDefault();
+		}
+	}
+</script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 </html>
 

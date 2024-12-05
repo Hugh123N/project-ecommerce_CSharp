@@ -1,0 +1,61 @@
+. {
+}
+
+
+#fondoLogin {
+    background: rgb(255,255,255);
+    background: -moz-linear-gradient(90deg, rgba(255,255,255,1) 35%, rgba(205,205,205,1) 45%, rgba(205,205,205,1) 55%, rgba(255,255,255,1) 65%);
+    background: -webkit-linear-gradient(90deg, rgba(255,255,255,1) 35%, rgba(205,205,205,1) 45%, rgba(205,205,205,1) 55%, rgba(255,255,255,1) 65%);
+    background: linear-gradient(90deg, rgba(255,255,255,1) 35%, rgba(205,205,205,1) 45%, rgba(205,205,205,1) 55%, rgba(255,255,255,1) 65%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ffffff",GradientType=1);
+    padding: 10% 0%;
+}
+
+#tarjetaBase {
+    border-radius: 50px;
+    background: rgb(38,29,7);
+    background: -moz-linear-gradient(90deg, rgba(38,29,7,0.520045518207283) 0%, rgba(74,73,97,0.2539390756302521) 50%, rgba(38,29,7,0.52) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(38,29,7,0.520045518207283) 0%, rgba(74,73,97,0.2539390756302521) 50%, rgba(38,29,7,0.52) 100%);
+    background: linear-gradient(90deg, rgba(38,29,7,0.520045518207283) 0%, rgba(74,73,97,0.2539390756302521) 50%, rgba(38,29,7,0.52) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#261d07",endColorstr="#261d07",GradientType=1);
+}
+
+#glass-icon {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    color: white;
+}
+
+#username {
+}
+
+#password {
+}
+
+#submitButton {
+}
+
+#buttomCancelar {
+}
+
+#login-form {
+    padding-top: 5%;
+    padding-bottom: 2%;
+}
+
+.card-header {
+    background-color: #F5F5F5;
+}
+
+.card-body {
+    background-color: #e8e8e8;
+}
+
+.error-message {
+    color: red;
+    display: none;
+}
