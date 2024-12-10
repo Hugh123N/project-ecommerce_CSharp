@@ -1,5 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
+using proyecto_ecommerce_.NET_MVC_.Controllers;
+using System.ComponentModel.DataAnnotations;
+
+
 
 namespace proyecto_ecommerce_.NET_MVC_.Models;
 

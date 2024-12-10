@@ -16,10 +16,16 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         public IActionResult Index() {
             return View();
         }
+
+        [HttpGet]
 		public IActionResult Registro()
 		{
-			return View("../Login/Registro");
+			return View();
 		}
+        public IActionResult Login()
+        {
+            return View();
+        }
 
 		[HttpPost]
         public async Task<IActionResult> Login(string username, string password)
