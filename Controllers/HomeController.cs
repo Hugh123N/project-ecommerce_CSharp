@@ -18,10 +18,10 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {   
             //List<Producto> products = _context.Productos.ToList();
-            return View();
+            return View(await _context.Productos.ToListAsync());
         }
 
         public IActionResult Privacy()

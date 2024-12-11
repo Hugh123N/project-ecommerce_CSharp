@@ -1,56 +1,41 @@
-﻿@{
+﻿@model IEnumerable<proyecto_ecommerce_.NET_MVC_.Models.Producto>
+
+@{
     ViewData["Title"] = "Home Page";
+    var i = 0;
+    foreach(var item in Model){
+        i++;
+    }
 }
 
 <div class="container mt-1">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
-            <li class="il-inline-flex il-items-center il-gap-1.5"><a href="#">Home</a></li>
-            <li class="il-inline-flex il-items-center il-gap-1.5">></li>
-            <li class="il-inline-flex il-items-center il-gap-1.5"><a href="#">Home</a></li>
+            <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Index">Home</a></li>
         </ol>
 
     </nav>
 
     <!-- Título -->
-    <h5 class="mb-2">Tienda de ecommerce <span class="text-muted">(163 productos disponibles)</span></h5>
+    <h5 class="mb-2">Tienda de ecommerce <span class="text-muted">(@i productos disponibles)</span></h5>
 
     <!-- Productos -->
     <div class="row">
         <!-- Tarjeta de producto (dinámica con un for loop) -->
         <!-- Simula un producto -->
-        
+        @foreach(var item in Model){
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card text-center">
-                <img src="~/images/producto.jpeg" class="card-img-top" alt="Producto" width="70%">
+                <img src="@item.Imagen" class="card-img-top" alt="Producto" width="60%">
                 <div class="card-body">
-                    <h5 class="card-title">Titulo</h5>
-                    <p class="card-text fw-bold text-primary">$ 100</p>
-                    <a href="" class="btn btn-primary">Ver producto</a>
+                    <h5 class="card-title">@item.Nombre</h5>
+                    <p class="card-text fw-bold text-primary">$ @item.Precio</p>
+                    <a asp-route-id="@item.Id" class="btn btn-primary">Ver producto</a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card text-center">
-                <img src="~/images/producto.jpeg" class="card-img-top" alt="Producto" width="70%">
-                <div class="card-body">
-                    <h5 class="card-title">Titulo</h5>
-                    <p class="card-text fw-bold text-primary">$ 100</p>
-                    <a href="" class="btn btn-primary">Ver producto</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-            <div class="card text-center">
-                <img src="~/images/producto.jpeg" class="card-img-top" alt="Producto" width="70%">
-                <div class="card-body">
-                    <h5 class="card-title">Titulo</h5>
-                    <p class="card-text fw-bold text-primary">$ 100</p>
-                    <a href="" class="btn btn-primary">Ver producto</a>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 </div>
 
@@ -68,5 +53,10 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    /*local*/
+    .container .row img{
+        padding:5px;
+        border-radius:16px;
     }
 </style>

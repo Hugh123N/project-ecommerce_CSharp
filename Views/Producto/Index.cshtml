@@ -1,0 +1,124 @@
+﻿@model IEnumerable<proyecto_ecommerce_.NET_MVC_.Models.Producto>
+
+@{
+    var i = 1;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5">></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Index">Producto</a></li>
+    </ol>
+</nav>
+
+<div class="nav-index">
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Registrar Nuevo Producto</a>
+    </p>
+    <form asp-controller="Producto" asp-action="Index">
+        <p >
+            <input type="text" name="buscar" class="form-control-sm" placeholder="Ingrese Nombre"/>
+            <input type="submit" value="Buscar" class="btn btn-outline-success" />
+        </p>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cantidad)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+                <td>
+                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    <!-- Botón para abrir el modal -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">Eliminar</button>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar este producto?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" method="post" asp-action="DeleteConfirmed">
+                    <input type="hidden" id="productId" name="id" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Botón que abrió el modal
+        var productId = button.getAttribute('data-id'); // Extraer el ID del producto
+
+        // Asignar el ID al input hidden dentro del formulario
+        var inputProductId = deleteModal.querySelector('#productId');
+        inputProductId.value = productId;
+    });
+</script>
+
+<style>
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /*local*/
+    .nav-index{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        
+    }
+</style>
