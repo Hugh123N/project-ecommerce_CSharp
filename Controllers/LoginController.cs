@@ -53,7 +53,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 ViewData["ErrorDirec"] = "La dirección es inválida.";
                 return View();
             }
-
+            /*usar validaciones backend primero*/
 
             /*if (modelo.password != modelo.repetirPassword)
             {
