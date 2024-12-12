@@ -48,18 +48,20 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         [HttpPost]
         public async Task<IActionResult> Registro(UsuarioVM modelo)
         {
-            if (!Regex.IsMatch(modelo.direccion, @"^[a-zA-Z0-9\s,.-]+$"))
+            if (modelo.password != modelo.repetirPassword)
             {
-                ViewData["ErrorDirec"] = "La dirección es inválida.";
+                ViewData["MCumplir"] = "Las contraseñas deben ser iguales";
+                return View();
+            }
+
+            if (string.IsNullOrEmpty(modelo.direccion) || !Regex.IsMatch(modelo.direccion, @"^[a-zA-Z0-9\s,.-]+$"))
+            {
+                ViewData["ErrorMessage"] = "La dirección no es válida o está vacía";
                 return View();
             }
             /*usar validaciones backend primero*/
 
-            /*if (modelo.password != modelo.repetirPassword)
-            {
-                ViewData["MCumplir"] = "Las contraseñas deben ser iguales";
-                return View();
-            }*/
+
 
             Usuario? correo_repetido = await _context.Usuarios.Where(u => u.Email == modelo.email).FirstOrDefaultAsync();
 			if (correo_repetido != null)
