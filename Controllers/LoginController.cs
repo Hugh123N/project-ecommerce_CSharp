@@ -2,7 +2,6 @@
 using proyecto_ecommerce_.NET_MVC_.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using proyecto_ecommerce_.NET_MVC_.Data;
 using proyecto_ecommerce_.NET_MVC_.ViewModels;
 using System;
 using System.Text.RegularExpressions;
@@ -30,20 +29,16 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         }
 
 		[HttpPost]
-        public async Task<IActionResult> Login(string username, string password)
+        public async Task<IActionResult> Login(UsuarioVM modelo)
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                TempData["ErrorMessage"] = "Debe completar ambos campos.";
-                return View("Index");
-            }
-            var user = await _context.Usuarios.FirstOrDefaultAsync(u => u.Username == username && u.Password == password);
+            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username && u.Password == modelo.password).FirstOrDefaultAsync();
 
-            if (user == null)
+            if (usuario_encontrado == null)
             {
-                TempData["ErrorMessage"] = "Usuario o contraseña incorrectos.";
-                return View("Index");
-            } // Logica para guardar la sesión del usuario puede ser agregada aquí.
+                ViewData["Mensaje"] = "No existe usuario o contraseña";
+                return View();
+            }
+
 
             TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
             return RedirectToAction("Index", "Home");
@@ -60,11 +55,11 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
 
 
-            if (modelo.password != modelo.repetirPassword)
+            /*if (modelo.password != modelo.repetirPassword)
             {
                 ViewData["MCumplir"] = "Las contraseñas deben ser iguales";
                 return View();
-            }
+            }*/
 
             Usuario? correo_repetido = await _context.Usuarios.Where(u => u.Email == modelo.email).FirstOrDefaultAsync();
 			if (correo_repetido != null)

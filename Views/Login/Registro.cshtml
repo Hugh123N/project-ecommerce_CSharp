@@ -31,17 +31,17 @@
                         La direccion debe escribirse bien, sino los pedidos NO llegarán.
                     </div>
 
-                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="E-mail" id="email" name="email" value="" asp-for="email" />
+                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="E-mail" id="email" name="email" oninput="validateInputs()" asp-for="email" />
                     <div id="emailError" class="error-message form-text mb-3" > 
                         El email no tiene mayusculas, debe llevar un arroba y un ".com" . 
                     </div>
 
-                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="Nombres" id="nombre" name="nombre" value="" asp-for="nombre" />
+                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="Nombres" id="nombre" name="nombre" oninput="validateInputs()" asp-for="nombre" />
                     <div id="nombresError" class="error-message form-text mb-3" > 
                         Escribir los nombres y apellidos separados. 
                     </div>
 
-                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="Telefono" id="telefono" name="telefono" value="" asp-for="telefono" /> 
+                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="Telefono" id="telefono" name="telefono" oninput="validateInputs()" asp-for="telefono" />
                     <div id="telefError" class="error-message form-text mb-3" > 
                         Los telefonos deben seguir el formato +51 #########. 
                     </div>
@@ -63,7 +63,7 @@
 
 					<div class="container-lg justify-content-center mt-5">
 						<div class="d-grid gap-2 mb-3">
-							<button class="btn btn-primary fs-5" type="submit" id="submitButton" disabled>Crear cuenta</button>
+							<button class="btn btn-primary fs-5" type="submit" id="submitButton" >Crear cuenta</button>
 						</div>
 						<div class="d-grid gap-2">
 							<button class="btn btn-danger fs-5" id="buttomCancelar" type="button" onclick="goBack()">Cancelar</button>
@@ -93,7 +93,7 @@
 	</div>
 </div>
 <script>
-    function validateInputs() {
+    /*function validateInputs() {
 
         const email = document.getElementById('email').value;
         const nombre = document.getElementById('nombre').value;
@@ -171,7 +171,7 @@
 
 
         submitButton.disabled = !isValid;
-    }
+    }*/
 
     function goBack() {
         window.history.back(); 
