@@ -28,9 +28,20 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         }
 
         // GET: ProductoController/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var producto = await _context.Productos.FindAsync(id);
+            if (producto == null)
+            {
+                return NotFound();
+            }
+         
+            return View(producto);
         }
 
         // GET: ProductoController/Create
