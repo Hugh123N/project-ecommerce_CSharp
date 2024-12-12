@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <h5 class="card-title">@item.Nombre</h5>
                     <p class="card-text fw-bold text-primary">$ @item.Precio</p>
-                    <a asp-route-id="@item.Id" class="btn btn-primary">Ver producto</a>
+                        <a asp-controller="Producto" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Ver producto</a>
                 </div>
             </div>
         </div>

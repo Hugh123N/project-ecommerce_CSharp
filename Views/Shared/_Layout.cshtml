@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -22,7 +23,9 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo">
         <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
             <li class="nav-item">
-                <a class="nav-link active"><i class="fas fa-cart-plus">(<label style="color: darkorange">0</label>)</i>Carrito</a>
+                    <a class="nav-link active" href="@Url.Action("Carrito","Home")">
+                        <i class="fas fa-cart-plus">(<label style="color: darkorange">@(ViewBag.CarritoCount ?? 0)</label>)</i>
+                     Carrito</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
