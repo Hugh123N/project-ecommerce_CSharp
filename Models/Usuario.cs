@@ -11,6 +11,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Models;
 
 public partial class Usuario
 {
+    [Key]
     public int Id { get; set; }
 
     public string? Direccion { get; set; }
