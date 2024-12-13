@@ -19,13 +19,12 @@
 
     <!-- Título -->
     <h5 class="mb-2">Tienda de ecommerce <span class="text-muted">(@i productos disponibles)</span></h5>
-    @if (ViewData["NuevoUsuario"] != null)
+    @if (TempData["NuevoUsuario"] != null)
     {
-        <div class="alert alert-success alert-dismissible" role="alert">
-            <span>
-                @ViewData["NuevoUsuario"]
-            </span>
-
+        <div class="alert alert-success alert-dismissible" role="alert"> 
+            <span> 
+                @TempData["NuevoUsuario"] 
+            </span> 
         </div>
     }
     <!-- Productos -->

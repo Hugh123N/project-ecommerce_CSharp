@@ -54,11 +54,12 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 return View();
             }
 
-            if (string.IsNullOrEmpty(modelo.direccion) || !Regex.IsMatch(modelo.direccion, @"^[a-zA-Z0-9\s,.-]+$"))
+            if (string.IsNullOrEmpty(modelo.direccion) || !Regex.IsMatch(modelo.direccion, @"^[a-zA-Z0-9\s,.\-#]+$"))
             {
-                ViewData["ErrorMessage"] = "La dirección no es válida o está vacía";
+                ViewData["MCumplir"] = "La dirección no es válida o está vacía";
                 return View();
             }
+
             if (string.IsNullOrEmpty(modelo.email) || !Regex.IsMatch(modelo.email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) 
             { 
                 ViewData["MCumplir"] = "El formato del correo es inválido"; 
@@ -69,14 +70,14 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 ViewData["MCumplir"] = "El teléfono es inválido."; 
                 return View(); 
             }
-            if (string.IsNullOrEmpty(modelo.nombre) || !Regex.IsMatch(modelo.nombre, @"^[a-zA-Z\s]+$")) 
-            { 
-                ViewData["MCumplir"] = "El nombre es inválido."; 
-                return View(); 
+            if (string.IsNullOrEmpty(modelo.nombre) || !Regex.IsMatch(modelo.nombre, @"^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$"))
+            {
+                ViewData["MCumplir"] = "El nombre es inválido.";
+                return View();
             }
             if (string.IsNullOrEmpty(modelo.username) || !Regex.IsMatch(modelo.username, @"^[a-zA-Z0-9]{9,255}$")) 
             { 
-                ViewData["MCumplir"] = "El nombre de usuario es inválido."; 
+                ViewData["MCumplir"] = "El nombre de usuario debe ser minimo 9 digitos."; 
                 return View(); 
             }
             if (string.IsNullOrEmpty(modelo.password) || !Regex.IsMatch(modelo.password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$")) 
@@ -115,9 +116,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             await _context.Usuarios.AddAsync(usuario);
             await _context.SaveChangesAsync();
 
-			ViewData["NuevoUsuario"] = "Bienvenido, ya tienes cuenta (no olvides la contraseña)";
+            TempData["NuevoUsuario"] = "Bienvenido, ya tienes cuenta (no olvides la contraseña)";
 
-			return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
 
