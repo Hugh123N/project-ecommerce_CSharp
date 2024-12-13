@@ -59,6 +59,32 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 ViewData["ErrorMessage"] = "La dirección no es válida o está vacía";
                 return View();
             }
+            if (string.IsNullOrEmpty(modelo.email) || !Regex.IsMatch(modelo.email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$")) 
+            { 
+                ViewData["MCumplir"] = "El formato del correo es inválido"; 
+                return View(); 
+            }
+            if (string.IsNullOrEmpty(modelo.telefono) || !Regex.IsMatch(modelo.telefono, @"^[0-9]{7,13}$")) 
+            { 
+                ViewData["MCumplir"] = "El teléfono es inválido."; 
+                return View(); 
+            }
+            if (string.IsNullOrEmpty(modelo.nombre) || !Regex.IsMatch(modelo.nombre, @"^[a-zA-Z\s]+$")) 
+            { 
+                ViewData["MCumplir"] = "El nombre es inválido."; 
+                return View(); 
+            }
+            if (string.IsNullOrEmpty(modelo.username) || !Regex.IsMatch(modelo.username, @"^[a-zA-Z0-9]{9,255}$")) 
+            { 
+                ViewData["MCumplir"] = "El nombre de usuario es inválido."; 
+                return View(); 
+            }
+            if (string.IsNullOrEmpty(modelo.password) || !Regex.IsMatch(modelo.password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$")) 
+            { 
+                ViewData["MCumplir"] = "La contraseña es inválida."; 
+                return View(); 
+            }
+
             /*usar validaciones backend primero*/
 
 
