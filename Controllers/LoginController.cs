@@ -67,7 +67,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
             if (string.IsNullOrEmpty(modelo.telefono) || !Regex.IsMatch(modelo.telefono, @"^[0-9]{7,13}$")) 
             { 
-                ViewData["MCumplir"] = "El teléfono es inválido."; 
+                ViewData["MCumplir"] = "El teléfono es inválido. (9 digitos en Perú)"; 
                 return View(); 
             }
             if (string.IsNullOrEmpty(modelo.nombre) || !Regex.IsMatch(modelo.nombre, @"^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$"))
@@ -82,7 +82,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
             if (string.IsNullOrEmpty(modelo.password) || !Regex.IsMatch(modelo.password, @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$")) 
             { 
-                ViewData["MCumplir"] = "La contraseña es inválida."; 
+                ViewData["MCumplir"] = "La contraseña es inválida. Recuerda que minimo 8 digitos y UNA MAYUSCULa, una minuscula y un número"; 
                 return View(); 
             }
 
