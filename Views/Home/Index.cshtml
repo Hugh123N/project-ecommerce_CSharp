@@ -19,7 +19,15 @@
 
     <!-- Título -->
     <h5 class="mb-2">Tienda de ecommerce <span class="text-muted">(@i productos disponibles)</span></h5>
-
+    @if (TempData["NuevoUsuario"] != null)
+    {
+        <div class="alert alert-success alert-dismissible row justify-content-between" role="alert" style="margin:3px">
+            <span class="col-10">
+                @TempData["NuevoUsuario"] 
+            </span>
+            <button class="btn-close col-2" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
     <!-- Productos -->
     <div class="row">
         <!-- Tarjeta de producto (dinámica con un for loop) -->
