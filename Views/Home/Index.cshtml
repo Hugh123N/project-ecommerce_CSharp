@@ -19,7 +19,15 @@
 
     <!-- Título -->
     <h5 class="mb-2">Tienda de ecommerce <span class="text-muted">(@i productos disponibles)</span></h5>
+    @if (ViewData["NuevoUsuario"] != null)
+    {
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <span>
+                @ViewData["NuevoUsuario"]
+            </span>
 
+        </div>
+    }
     <!-- Productos -->
     <div class="row">
         <!-- Tarjeta de producto (dinámica con un for loop) -->

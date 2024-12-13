@@ -31,7 +31,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 		[HttpPost]
         public async Task<IActionResult> Login(UsuarioVM modelo)
         {
-            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username && u.Password == modelo.password).FirstOrDefaultAsync();
+            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username && u.Password == modelo.password && u.Tipo == "usuario").FirstOrDefaultAsync();
 
             if (usuario_encontrado == null)
             {
@@ -87,7 +87,12 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
             /*usar validaciones backend primero*/
 
-
+            Usuario? username_repetido = await _context.Usuarios.Where(u => u.Username == modelo.username).FirstOrDefaultAsync();
+            if (username_repetido != null)
+            {
+                ViewData["MCumplir"] = "Ese username ya lo usó otro";
+                return View(); 
+            }
 
             Usuario? correo_repetido = await _context.Usuarios.Where(u => u.Email == modelo.email).FirstOrDefaultAsync();
 			if (correo_repetido != null)
@@ -112,7 +117,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
 			ViewData["NuevoUsuario"] = "Bienvenido, ya tienes cuenta (no olvides la contraseña)";
 
-			return View();
+			return RedirectToAction("Index", "Home");
         }
 
 
