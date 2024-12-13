@@ -71,25 +71,17 @@
 					</div>
 					@if (ViewData["MCumplir"] != null)
 					{
-                        <div class="alert alert-secondary" role="alert" style="margin:3px">
-							<span>
+                        <div class="alert alert-secondary row justify-content-between" role="alert" style="margin:3px">
+							<span class="col-10">
 								@ViewData["MCumplir"]
-								<button class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 							</span>
+							<button class="btn-close col-2" data-bs-dismiss="alert" aria-label="Close"></button>
 						</div>
 					}
 				</form>
 			</div>
 		</div>
-		@if (ViewData["NuevoUsuario"] != null)
-		{
-			<div class="alert alert-success alert-dismissible" role="alert">
-				<span>
-					@ViewData["NuevoUsuario"]
-				</span>
-				
-			</div>
-		}
+		
 	</div>
 </div>
 <script>
