@@ -79,11 +79,17 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                     }
                     _context.Add(producto);
                     await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                
+                TempData["Message"] = "Producto creado exitosamente.";
+                TempData["MessageType"] = "success"; // success, error, info, warning
+
+                return RedirectToAction(nameof(Index));
                 
             }
             catch
             {
+                TempData["Message"] = "Ocurrió un error al crear el producto.";
+                TempData["MessageType"] = "error";
                 throw;
             }
         }
@@ -160,10 +166,16 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             {
                 _context.Productos.Update(producto);
                 await _context.SaveChangesAsync();
+                //mensaje de exito que se mostrara en la vista con Toastr.js
+                TempData["Message"] = "Producto actualizado exitosamente.";
+                TempData["MessageType"] = "success"; // success, error, info, warning
                 return RedirectToAction(nameof(Index));
             }
             catch(DbUpdateConcurrencyException)
             {
+                //mensaje de error que se mostrara en la vista con Toastr.js
+                TempData["Message"] = "Ocurrió un error al actualizar el producto.";
+                TempData["MessageType"] = "error"; // success, error, info, warning
                 throw;
             }
         }
@@ -191,8 +203,11 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 //elimina el producto de la base de datos
                 _context.Productos.Remove(producto);
                 await _context.SaveChangesAsync();
+            //mensaje de exito que se mostrara en la vista con Toastr.js
+            TempData["Message"] = "Producto eliminado exitosamente.";
+            TempData["MessageType"] = "success"; // success, error, info, warning    
 
-                return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
     }
 }

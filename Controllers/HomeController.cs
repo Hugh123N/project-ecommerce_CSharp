@@ -94,7 +94,23 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 sumaTotal=detalles.Sum(s=>s.Total);
 
             }
+            //mensaje de exito que se mostrara en la vista con Toastr.js
+            TempData["Message"] = "Producto eliminado del carrito.";
+            TempData["MessageType"] = "warning"; // success, error, info, warning
+
             return RedirectToAction("Carrito","Home");
+        }
+
+        public IActionResult OrdenResumen() {
+            Usuario usuario=new Usuario();
+            ViewBag.Total = sumaTotal;
+            return View(detalles);
+        }
+
+        public IActionResult OrdenGenerar()
+        {
+
+            return View();
         }
 
 

@@ -8,7 +8,10 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/proyecto_ecommerce_.NET_MVC_.styles.css" asp-append-version="true" />
+    <!------------- font awesome para iconos ---------------------------->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <!------ Toastr.js  para mostrar notificaciones -------------->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand-sm navbar-dark bg-dark nav-cabecera">
@@ -110,8 +113,31 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <!--Toastr.js  para mostrar notificaciones-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+<script>
+    /*-------------Toastr.js  para mostrar notificaciones------------ */
+    $(document).ready(function () {
+        var message = '@TempData["Message"]';
+        var messageType = '@TempData["MessageType"]'; // success, error, info, warning
+
+        if (message) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "2000" // Duración de 2 segundos
+            };
+
+            toastr[messageType](message); // Muestra el mensaje
+        }
+    });
+</script>
 
 
