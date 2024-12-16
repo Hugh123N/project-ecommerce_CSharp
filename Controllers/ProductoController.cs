@@ -3,8 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using proyecto_ecommerce_.NET_MVC_.Models;
 
+using Microsoft.AspNetCore.Authorization;
+
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
+    [Authorize]
     public class ProductoController : Controller
     {
         private readonly EcommerceCursoContext _context;

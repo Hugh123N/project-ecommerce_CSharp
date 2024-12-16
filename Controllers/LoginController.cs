@@ -6,6 +6,10 @@ using proyecto_ecommerce_.NET_MVC_.ViewModels;
 using System;
 using System.Text.RegularExpressions;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
     public class LoginController : Controller
@@ -38,6 +42,19 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 ViewData["Mensaje"] = "No existe usuario o contraseña";
                 return View();
             }
+
+            //config cookies -> es para crear las cookies y gestionar nombre, username y tipo(rol)
+            var claims = new List<Claim>
+             {
+                 new Claim(ClaimTypes.Name, usuario_encontrado.Nombre),
+                 new Claim("UserName", usuario_encontrado.Username)
+             };
+            claims.Add(new Claim(ClaimTypes.Role, usuario_encontrado.Tipo));
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
 
             // Guardar información del usuario en Session
             HttpContext.Session.SetInt32("UsuarioId", usuario_encontrado.Id);
@@ -112,7 +129,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 Telefono = modelo.telefono,
                 Username = modelo.username,
                 Password = modelo.password,
-                Tipo = "usuario"
+                Tipo = "user"
             };
 
             await _context.Usuarios.AddAsync(usuario);
@@ -123,6 +140,20 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        //cerrar session
+        public async Task<IActionResult> CerrarSession()
+        {
+            //cerramos cookies ->   Out para salir
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            HttpContext.Session.Remove("UsuarioId");
+            HttpContext.Session.Clear(); // Borra toda la información en Session
+
+            TempData["Message"] = "Session cerrada exitosamente.";
+            TempData["MessageType"] = "success"; // success, error, info, warning
+
+            return RedirectToAction("Index", "Home");
+        }
 
     }
 }

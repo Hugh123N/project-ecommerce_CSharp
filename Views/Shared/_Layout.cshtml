@@ -35,8 +35,10 @@
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Correo del Usuario</a>
                     <li><hr class="dropdown-divider" /></li>
+                    <!--if(Usuario==null){-->
                     <li ><a class="dropdown-item" asp-area="" asp-controller="Login" asp-action="Login">Ingresar</a></li>
-                    <li><a class="dropdown-item" href="#!">Cerrar sesion</a></li>
+                        <!-- }-->
+                    <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSession">Cerrar sesion</a></li>
                 </ul>
             </li>
         </ul>
@@ -87,7 +89,7 @@
                         </details>
                     </ul>
                 </div>
-                <button class="salir" >✖️ Salir</button>
+            <!-- <button class="salir" >✖️ Salir</button>-->
         </div>
         <div id="layoutSidenav_content">
             <main>

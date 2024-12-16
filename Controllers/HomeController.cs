@@ -188,6 +188,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
         }
 
+       
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
