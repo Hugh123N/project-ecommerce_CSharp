@@ -24,9 +24,9 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Datos Orden</h5>
-                    <h6>Nombre</h6>
-                    <h6>Email</h6>
-                    <h6>Direccion</h6>
+                    <h6>Nombre     :@ViewBag.Usuario.Nombre</h6>
+                    <h6>Email      :@ViewBag.Usuario.Email</h6>
+                    <h6>Direccion  :@ViewBag.Usuario.Direccion </h6>
                     <h5 class="card-title">Productos</h5>
                     <div class="alert alert-light" role="alert">
                         <table class="table">
@@ -60,7 +60,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <a class="text-end btn btn-outline-success">Generar Orden</a>
+                        <a class="text-end btn btn-outline-success" asp-action="GenerarOrden">Generar Orden</a>
                     </div>
                 </div>
             </div>

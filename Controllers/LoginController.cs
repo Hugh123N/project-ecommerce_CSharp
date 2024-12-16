@@ -39,7 +39,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 return View();
             }
 
-
+            // Guardar información del usuario en Session
+            HttpContext.Session.SetInt32("UsuarioId", usuario_encontrado.Id);
+            
             TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
             return RedirectToAction("Index", "Home");
 

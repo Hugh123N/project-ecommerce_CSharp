@@ -77,8 +77,15 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                         // Guarda la ruta relativa en el modelo
                         producto.Imagen = $"/images/{fileName}";
                     }
-                    _context.Add(producto);
-                    await _context.SaveChangesAsync();
+                //obtenemos ID de usuario mediante sesion
+                int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
+                Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
+                if (usuario == null) {
+                    return NotFound();
+                }
+                producto.Usuario = usuario;
+                _context.Add(producto);
+                await _context.SaveChangesAsync();
                 
                 TempData["Message"] = "Producto creado exitosamente.";
                 TempData["MessageType"] = "success"; // success, error, info, warning

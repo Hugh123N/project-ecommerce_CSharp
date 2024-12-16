@@ -14,7 +14,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
         static List<Detalle> detalles=new List<Detalle>();
         static double sumaTotal = 0.0;
-        Ordene orden = new Ordene();
 
         public HomeController(ILogger<HomeController> logger, EcommerceCursoContext context)
         {
@@ -72,7 +71,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
             //recorremos la tabla y sumamos todos los totales
             sumaTotal = detalles.Sum(s=>s.Total);
-            orden.Total = sumaTotal;
             ViewBag.Total = sumaTotal;
 
             //recorremos la tabla y contamos cuantos objetos hay
@@ -81,7 +79,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             //HttpContext.Session.SetInt32("CarritoCount",detalles.Count);
             return View(detalles);
         }
-
+        
         public IActionResult DeleteCart(int id)
         {
             List<Detalle> detallesNueva = new List<Detalle>();
@@ -101,16 +99,93 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return RedirectToAction("Carrito","Home");
         }
 
-        public IActionResult OrdenResumen() {
-            Usuario usuario=new Usuario();
+        public async Task<IActionResult> OrdenResumen() {
+            //obtenemos ID de usuario mediante sesion
+            int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
+            Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
+            if(usuario == null) {
+                TempData["Message"] = "Primero debe Loguearse para realizr el pedido";
+                TempData["MessageType"] = "warning";
+                return RedirectToAction("Login","Login");
+            }
+            ViewBag.Usuario = usuario;
+
             ViewBag.Total = sumaTotal;
             return View(detalles);
         }
 
-        public IActionResult OrdenGenerar()
+        public async Task<IActionResult> GenerarOrden()
         {
+            try {
+                //obtener el numero correlativo
+                List<Ordene> ordenes = await _context.Ordenes.ToListAsync();
+                // Determinar el número mayor en las órdenes existentes
+                int numero = ordenes.Any() ? ordenes.Max(o => int.Parse(o.Numero)) + 1 : 1;
+                // Formatear el número con ceros a la izquierda
+                string numeroCorrelativo = numero.ToString("D10"); // "D10" asegura que tendrá 10 dígitos
 
-            return View();
+                //obtenemos ID de usuario mediante sesion
+                int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
+                Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
+                if (usuario == null)
+                {
+                    TempData["Message"] = "El Usuario no existe.";
+                    TempData["MessageType"] = "warning";
+                    return RedirectToAction("Carrito","Home");
+                }
+                Ordene orden = new Ordene {
+                    Usuario = usuario,
+                    FechaCreacion = DateTime.Now,
+                    Total = sumaTotal,
+                    Numero = numeroCorrelativo
+                };
+                //guardamos orden
+                _context.Add(orden);
+                 await _context.SaveChangesAsync();
+                
+                foreach(var iten in detalles)
+                {
+                    var det = new Detalle
+                    {
+                        Nombre = iten.Nombre,
+                        Cantidad = iten.Cantidad,
+                        Precio = iten.Precio,
+                        Total = iten.Total,
+                        Orden = orden,
+                        Producto = iten.Producto
+                    };
+                    _context.Add(det); // Añadimos cada detalle
+
+                    // Actualizar el stock del producto
+                    var producto = await _context.Productos.FindAsync(iten.Producto.Id); 
+                    if (producto != null)
+                    {
+                        producto.Cantidad -= (int) iten.Cantidad; // Reducir el stock
+                        if (producto.Cantidad < 0)
+                        {
+                            // Manejar caso de stock insuficiente
+                            TempData["Message"] = $"Stock insuficiente para el producto {producto.Nombre}.";
+                            TempData["MessageType"] = "error";
+                            return RedirectToAction("Index", "Home");
+                        }
+                        _context.Productos.Update(producto); // Actualizar el producto
+                    }
+                }
+                // Guardamos los cambios en la base de datos
+                await _context.SaveChangesAsync();
+
+                detalles = new List<Detalle>();
+               
+                TempData["Message"] = "Orden generado exitosamente.";
+                TempData["MessageType"] = "success";
+                return RedirectToAction("Index","Home");
+             }
+            catch
+            {
+                TempData["Message"] = "No fue posible generar la orden.";
+                TempData["MessageType"] = "error";
+                return RedirectToAction("Carrito", "Home");
+            }
         }
 
 
