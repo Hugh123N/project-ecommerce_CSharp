@@ -1,0 +1,65 @@
+﻿@model IEnumerable<proyecto_ecommerce_.NET_MVC_.Models.Ordene>
+@{
+
+    var i = 1;
+}
+
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5">></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a>Facturas</a></li>
+    </ol>
+</nav>
+
+<div class="nav-index">
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Registrar Nuevo Producto</a>
+    </p>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Numero</th>
+            <th>Total</th>
+            <th>Fecha creacion</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaCreacion)
+                </td>
+                <td>
+                    <a class="btn btn-success" asp-action="DetalleOrden" asp-route-id="@item.Id">Ver detalle</a>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+
+
+
+
+<style>
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+</style>

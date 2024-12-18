@@ -4,6 +4,7 @@ using System.Diagnostics;
 //implementacion de dependencias
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.ObjectModel;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
@@ -188,7 +189,74 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
         }
 
-       
+        public async Task<IActionResult> ListaOrden() {
+            List<Ordene> listaOrdenes = new List<Ordene>();
+            //obtenemos ID de usuario mediante sesion
+            int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
+            if (idUsuario == null)
+            {
+                TempData["Message"] = "Debe iniciar sesión para ver sus órdenes.";
+                TempData["MessageType"] = "warning";
+                return RedirectToAction("Index","Home");
+            }
+            // Buscamos al usuario en la base de datos
+            Usuario usuario = await _context.Usuarios
+                .Include(u => u.Ordenes) // Incluye las órdenes asociadas al usuario
+                .FirstOrDefaultAsync(u => u.Id == idUsuario);
+
+            if (usuario == null)
+            {
+                TempData["Message"] = "Usuario no encontrado.";
+                TempData["MessageType"] = "error";
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Verificamos si el usuario es administrador
+            if (usuario.Tipo != null && usuario.Tipo.Equals("admin", StringComparison.OrdinalIgnoreCase))
+            {
+                // Si es administrador, obtenemos todas las órdenes
+                listaOrdenes = await _context.Ordenes
+                    .Include(o => o.Usuario) // Incluye los detalles del usuario para mostrar en la vista
+                    .ToListAsync();
+            }
+            else
+            {
+                // Si no es administrador, solo mostramos las órdenes del usuario
+                listaOrdenes = usuario.Ordenes.ToList();
+            }
+
+            return View(listaOrdenes);
+
+        }
+
+        public async Task<IActionResult> DetalleOrden(int id) {
+            List<Detalle> lista = new List<Detalle>();
+            try {
+                if (id == null)
+                {
+                    return NotFound();
+                }
+                //obtiene detalles oasociados a Orden
+                Ordene orden = await _context.Ordenes.Include(u => u.Detalles).FirstOrDefaultAsync(d => d.Id == id);
+                Usuario usuario = await _context.Usuarios.FindAsync(orden.UsuarioId);
+                if (orden == null && usuario == null)
+                {
+                    return NotFound();
+                }
+                lista = orden.Detalles.ToList();
+                ViewBag.Usuario = usuario;
+                ViewBag.Total = orden.Total;
+                return View(lista);
+            }
+            catch
+            {
+                TempData["Message"] = "Ocurrio un error al obtener detalle, Intentelo de nuevo mas tarde.";
+                TempData["MessageType"] = "warning";
+                throw;
+            }
+        }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
