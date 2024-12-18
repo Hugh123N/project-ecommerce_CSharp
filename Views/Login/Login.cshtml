@@ -7,6 +7,7 @@
 	<title>@ViewData["Title"]</title>
 	<link rel="stylesheet" href="~/css/Login.css" />
 
+
 	<div class="row justify-content-center" id="fondoLogin">
         <div class="col-lg-6">
 			<div class="card p-5 border border-dark" id="tarjetaBase">
@@ -18,7 +19,7 @@
 
 						<input class="form-control mb-1  border border-light text-xl-start" type="text" placeholder="Nombre_usuario" id="username" name="username" oninput="validateInputs()" />
 						<div id="usernameError" class="error-message form-text mb-1">
-							El usuario debe tener entre 9 y 255 caracteres.
+							El Nombre de Usuario debe tener entre 9 y 255 caracteres.
 						</div>
 
 						<input class="form-control mb-1  border border-light text-xl-start" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" />
@@ -32,7 +33,7 @@
 							<button class="btn btn-primary fs-5" type="submit" id="submitButton" disabled>Iniciar Sesión</button>
 							</div>
 							<div class="d-grid gap-2">
-							<button class="btn btn-danger fs-5" type="button" id="buttomCancelar" onclick="window.location.href = 'https://www.google.com.pe/?gfe_rd=cr&dcr=0&ei=TzvEWfbuCZCz-wWGtbZQ';">Cancelar</button>
+							<button class="btn btn-danger fs-5" type="button" id="buttomCancelar" onclick="goBack()">Cancelar</button>
 							</div>
 						</div>
 						
@@ -81,17 +82,14 @@
 		submitButton.disabled = !isValid;
 	}
 
-	function checkEmptyFields(event) {
-		const username = document.getElementById('username').value;
-		const password = document.getElementById('password').value;
-
-		if (username.trim() === '' || password.trim() === '') {
-			alert('Debe completar ambos campos.');
-			event.preventDefault();
-		}
+	function goBack() {
+		window.history.back();
 	}
+	
 </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </html>
 

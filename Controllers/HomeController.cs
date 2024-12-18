@@ -4,6 +4,7 @@ using System.Diagnostics;
 //implementacion de dependencias
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
@@ -79,8 +80,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             //HttpContext.Session.SetInt32("CarritoCount",detalles.Count);
             return View(detalles);
         }
-        
-        public IActionResult DeleteCart(int id)
+
+		[Authorize(Roles = "user")]
+		public IActionResult DeleteCart(int id)
         {
             List<Detalle> detallesNueva = new List<Detalle>();
             foreach(var item in detalles)
@@ -99,12 +101,13 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return RedirectToAction("Carrito","Home");
         }
 
-        public async Task<IActionResult> OrdenResumen() {
+		[Authorize(Roles = "user")]
+		public async Task<IActionResult> OrdenResumen() {
             //obtenemos ID de usuario mediante sesion
             int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
             Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
             if(usuario == null) {
-                TempData["Message"] = "Primero debe Loguearse para realizr el pedido";
+                TempData["Message"] = "Primero debe Loguearse para realizar el pedido";
                 TempData["MessageType"] = "warning";
                 return RedirectToAction("Login","Login");
             }
@@ -114,7 +117,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return View(detalles);
         }
 
-        public async Task<IActionResult> GenerarOrden()
+		[Authorize(Roles = "user")]
+		public async Task<IActionResult> GenerarOrden()
         {
             try {
                 //obtener el numero correlativo

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
-    [Authorize]
+    
     public class ProductoController : Controller
     {
         private readonly EcommerceCursoContext _context;
@@ -17,6 +17,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             _context =ecommerceCursoContext;
         }
 
+        [Authorize(Roles = "admin")]
         // GET: ProductoController
         public async Task<IActionResult> Index(string buscar)
         {
@@ -29,6 +30,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
             return View(await productos.ToListAsync());
         }
+
 
         // GET: ProductoController/Details/5
         public async Task<IActionResult> Detail(int id)
@@ -47,14 +49,17 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return View(producto);
         }
 
-        // GET: ProductoController/Create
-        public ActionResult Create()
+		[Authorize(Roles = "admin")]
+		// GET: ProductoController/Create
+		public ActionResult Create()
         {   
             return View();
         }
 
-        // POST: ProductoController/Create
-        [HttpPost]
+
+		// POST: ProductoController/Create
+		[Authorize(Roles = "admin")]
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IFormFile img, Producto producto)
         {
@@ -104,8 +109,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
         }
 
-        // GET: ProductoController/Edit/5
-        public async Task<IActionResult> Edit(int id)
+		// GET: ProductoController/Edit/5
+		[Authorize(Roles = "admin")]
+		public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
@@ -118,8 +124,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return View(producto);
         }
 
-        // POST: ProductoController/Edit/5
-        [HttpPost]
+		// POST: ProductoController/Edit/5
+		[Authorize(Roles = "admin")]
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Producto producto, IFormFile img)
         {
@@ -190,8 +197,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
         }
 
-        // POST: ProductoController/Delete/5
-        [HttpPost]
+		// POST: ProductoController/Delete/5
+		[Authorize(Roles = "admin")]
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, IFormCollection collection)
         {
