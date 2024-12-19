@@ -4,11 +4,8 @@ using System.Diagnostics;
 //implementacion de dependencias
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
 using System.Collections.ObjectModel;
-=======
 using Microsoft.AspNetCore.Authorization;
->>>>>>> d1e599e9db96b6f542f178bffbff961047e95d57
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {

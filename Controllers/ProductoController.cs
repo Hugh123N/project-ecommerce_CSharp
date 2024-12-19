@@ -7,11 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
-<<<<<<< HEAD
-    //[Authorize]
-=======
-    
->>>>>>> d1e599e9db96b6f542f178bffbff961047e95d57
     public class ProductoController : Controller
     {
         private readonly EcommerceCursoContext _context;
