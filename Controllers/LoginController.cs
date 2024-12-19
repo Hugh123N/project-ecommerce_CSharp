@@ -35,12 +35,13 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 		[HttpPost]
         public async Task<IActionResult> Login(UsuarioVM modelo)
         {
-            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username && u.Password == modelo.password && u.Tipo == "usuario").FirstOrDefaultAsync();
+            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username && u.Password == modelo.password).FirstOrDefaultAsync();
 
             if (usuario_encontrado == null)
             {
-                ViewData["Mensaje"] = "No existe usuario o contraseña";
-                return View();
+                TempData["Message"] = "No existe usuario o contraseña";
+				TempData["MessageType"] = "warning"; // success, error, info, warning
+				return View();
             }
 
             //config cookies -> es para crear las cookies y gestionar nombre, username y tipo(rol)
@@ -59,8 +60,10 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             // Guardar información del usuario en Session
             HttpContext.Session.SetInt32("UsuarioId", usuario_encontrado.Id);
             
-            TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
-            return RedirectToAction("Index", "Home");
+			TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
+			TempData["MessageType"] = "success"; // success, error, info, warning
+
+			return RedirectToAction("Index", "Home");
 
         }
 
@@ -136,6 +139,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             await _context.SaveChangesAsync();
 
             TempData["NuevoUsuario"] = "Bienvenido, ya tienes cuenta (no olvides la contraseña)";
+            TempData["MessageType"] = "info"; // success, error, info, warning
 
             return RedirectToAction("Index", "Home");
         }

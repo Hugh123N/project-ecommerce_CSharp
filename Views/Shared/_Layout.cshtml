@@ -1,4 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity;
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,9 +39,15 @@
                     <li><a class="dropdown-item" href="#!">Correo del Usuario</a>
                     <li><hr class="dropdown-divider" /></li>
                     <!--if(Usuario==null){-->
-                    <li ><a class="dropdown-item" asp-area="" asp-controller="Login" asp-action="Login">Ingresar</a></li>
-                        <!-- }-->
-                    <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSession">Cerrar sesion</a></li>
+
+                    @if (User.IsInRole("admin") || User.IsInRole("user"))
+                    {
+                        <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSession">Cerrar sesion</a></li>
+                    } else
+                    {
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Login" asp-action="Login">Ingresar</a></li>
+                    }
+
                 </ul>
             </li>
         </ul>
@@ -48,6 +57,7 @@
         <div class="contenido-menu ">
             <div class="sb-sidenav-menu menu-container bg-dark">
                     <ul id="menu">
+                        
                         <details>
                             <summary class="sb-sidenav-menu-heading">Resumen</summary>
                             <li>
@@ -56,37 +66,53 @@
                                     Dashboard
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="@Url.Action("Usuarios","Home")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                    Usuarios
-                                </a>
-                            </li>
+						    @if (User.IsInRole("admin")) {
+						    <li>
+							    <a class="nav-link" href="@Url.Action("Usuarios","Home")">
+								    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+								    Usuarios
+							    </a>
+						    </li>
+                            }
                         </details>
-                        <details>
-                            <summary class="sb-sidenav-menu-heading">Mantenimiento</summary>
-                            <li>
-                                <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Categorias
-                                </a>
-                            </li>
-                            <li>
-                                <a class="nav-link" href="@Url.Action("Index","Producto")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
-                                    Productos
-                                </a>
-                            </li>
-                        </details>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <details>
+                                <summary class="sb-sidenav-menu-heading">Mantenimiento</summary>
+                                <li>
+                                    <a class="nav-link" href="#">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                        Categorias
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="nav-link" href="@Url.Action("Index","Producto")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                                        Productos
+                                    </a>
+                                </li>
+                            </details>
+                        }
+                    @if (User.IsInRole("user"))
+                    {
                         <details>
                             <summary class="sb-sidenav-menu-heading">Documentos</summary>
                             <li>
+<<<<<<< HEAD
                             <a class="nav-link" asp-controller="Home" asp-action="ListaOrden">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Factura
                             </a>
+=======
+                                <a class="nav-link" href="#">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                    Factura
+                                </a>
+>>>>>>> d1e599e9db96b6f542f178bffbff961047e95d57
                             </li>
                         </details>
+                    }
+                    
                     </ul>
                 </div>
             <!-- <button class="salir" >✖️ Salir</button>-->
@@ -135,6 +161,44 @@
                 "progressBar": true,
                 "positionClass": "toast-top-right",
                 "timeOut": "2000" // Duración de 2 segundos
+            };
+
+            toastr[messageType](message); // Muestra el mensaje
+        }
+    });
+</script>
+
+<script>
+    /*-------------Toastr.js  para mostrar notificaciones------------ */
+    $(document).ready(function () {
+        var message = '@TempData["SuccessMessage"]';
+        var messageType = '@TempData["MessageType"]'; // success, error, info, warning
+
+        if (message) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000" // Duración de 5 segundos
+            };
+
+            toastr[messageType](message); // Muestra el mensaje
+        }
+    });
+</script>
+
+<script>
+    /*-------------Toastr.js  para mostrar notificaciones------------ */
+    $(document).ready(function () {
+        var message = '@TempData["NuevoUsuario"]';
+        var messageType = '@TempData["MessageType"]'; // success, error, info, warning
+
+        if (message) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "8000" // Duración de 8 segundos
             };
 
             toastr[messageType](message); // Muestra el mensaje
