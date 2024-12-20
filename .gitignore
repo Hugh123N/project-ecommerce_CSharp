@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+#ignores extras  "para hacer deploy a algun servidor en la nube se debe quitar esto"
+wwwroot/images/
