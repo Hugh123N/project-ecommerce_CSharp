@@ -12,7 +12,7 @@ using System.Security.Claims;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         private readonly EcommerceCursoContext _context;
         public LoginController(EcommerceCursoContext appDBContext) 
@@ -48,7 +48,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             var claims = new List<Claim>
              {
                  new Claim(ClaimTypes.Name, usuario_encontrado.Nombre),
-                 new Claim("UserName", usuario_encontrado.Username)
+                 new Claim("UserName", usuario_encontrado.Username),
+                 new Claim(ClaimTypes.Email, usuario_encontrado.Email),
+                 new Claim("UsuarioCod", usuario_encontrado.Id.ToString())
              };
             claims.Add(new Claim(ClaimTypes.Role, usuario_encontrado.Tipo));
 
@@ -59,7 +61,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
             // Guardar información del usuario en Session
             HttpContext.Session.SetInt32("UsuarioId", usuario_encontrado.Id);
-            HttpContext.Session.SetString("UsuarioEmail", usuario_encontrado.Email);
 
 			TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
 			TempData["MessageType"] = "success"; // success, error, info, warning

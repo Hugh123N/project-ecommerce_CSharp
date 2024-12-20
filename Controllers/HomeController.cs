@@ -6,15 +6,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly EcommerceCursoContext _context;
 
-        static List<Detalle> detalles=new List<Detalle>();
+        public static List<Detalle> detalles=new List<Detalle>();
         static double sumaTotal = 0.0;
 
         public HomeController(ILogger<HomeController> logger, EcommerceCursoContext context)
@@ -83,10 +84,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             sumaTotal = detalles.Sum(s=>s.Total);
             ViewBag.Total = sumaTotal;
 
-            //recorremos la tabla y contamos cuantos objetos hay
-            ViewBag.CarritoCount = detalles.Count;
-
-            //HttpContext.Session.SetInt32("CarritoCount",detalles.Count);
             return View(detalles);
         }
 
@@ -112,11 +109,19 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
         //[Authorize(Roles = "user")] /*se bloqueo para la redireccion*/
         public async Task<IActionResult> OrdenResumen() {
-            //obtenemos ID de usuario mediante sesion
-            int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
-            Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
+            //obtiene id de usuario desde el cookies
+            string? idClaim = User.FindFirstValue("UsuarioCod");
+            if (idClaim == null)
+            {
+                TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
+                TempData["MessageType"] = "warning";
+                return RedirectToAction("Login", "Login");
+            }
+            int? idUsu = int.Parse(idClaim);
+            //obtenemos el usuario desde la base de datos
+            Usuario usuario = await _context.Usuarios.FindAsync(idUsu);
             if(usuario == null) {
-                TempData["Message"] = "Primero debe Loguearse para realizar el pedido";
+                TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
                 TempData["MessageType"] = "warning";
                 return RedirectToAction("Login","Login");
             }
@@ -137,9 +142,16 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 // Formatear el número con ceros a la izquierda
                 string numeroCorrelativo = numero.ToString("D10"); // "D10" asegura que tendrá 10 dígitos
 
-                //obtenemos ID de usuario mediante sesion
-                int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
-                Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
+                //obtiene id de usuario desde el cookies
+                string? idClaim = User.FindFirstValue("UsuarioCod");
+                if (idClaim == null)
+                {
+                    TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
+                    TempData["MessageType"] = "warning";
+                    return RedirectToAction("Login", "Login");
+                }
+                int? idUsu = int.Parse(idClaim);
+                Usuario usuario = await _context.Usuarios.FindAsync(idUsu);
                 if (usuario == null)
                 {
                     TempData["Message"] = "El Usuario no existe.";
@@ -147,7 +159,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                     return RedirectToAction("Carrito", "Home");
                 }
                 
-
                     Ordene orden = new Ordene
                     {
                         Usuario = usuario,
@@ -207,18 +218,19 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
         public async Task<IActionResult> ListaOrden() {
             List<Ordene> listaOrdenes = new List<Ordene>();
-            //obtenemos ID de usuario mediante sesion
-            int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
-            if (idUsuario == null)
+            //prueba de obtener id de usuario desde el cookies
+            string? idClaim =User.FindFirstValue("UsuarioCod");
+            if (idClaim == null)
             {
                 TempData["Message"] = "Debe iniciar sesión para ver sus órdenes.";
                 TempData["MessageType"] = "warning";
                 return RedirectToAction("Index","Home");
             }
+            int? idUsu = int.Parse(idClaim);
             // Buscamos al usuario en la base de datos
             Usuario usuario = await _context.Usuarios
                 .Include(u => u.Ordenes) // Incluye las órdenes asociadas al usuario
-                .FirstOrDefaultAsync(u => u.Id == idUsuario);
+                .FirstOrDefaultAsync(u => u.Id == idUsu);
 
             if (usuario == null)
             {

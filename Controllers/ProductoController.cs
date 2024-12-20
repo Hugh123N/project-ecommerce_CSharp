@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using proyecto_ecommerce_.NET_MVC_.Models;
 
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
-    public class ProductoController : Controller
+    public class ProductoController : BaseController
     {
         private readonly EcommerceCursoContext _context;
 
@@ -84,9 +85,17 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                         // Guarda la ruta relativa en el modelo
                         producto.Imagen = $"/images/{fileName}";
                     }
-                //obtenemos ID de usuario mediante sesion
-                int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
-                Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
+                //obtiene id de usuario desde el cookies
+                string? idClaim = User.FindFirstValue("UsuarioCod");
+                if (idClaim == null)
+                {
+                    TempData["Message"] = "Administrador no exise.";
+                    TempData["MessageType"] = "warning";
+                    return RedirectToAction("Login", "Login");
+                }
+                int? idUsu = int.Parse(idClaim);
+
+                Usuario usuario = await _context.Usuarios.FindAsync(idUsu);
                 if (usuario == null) {
                     return NotFound();
                 }
