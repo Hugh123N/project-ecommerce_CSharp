@@ -1,7 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims;
 
-
+@{
+    var usuarioName=User?.FindFirstValue(ClaimTypes.Name) ?? "Login";
+    var usuarioEmail = User?.FindFirstValue(ClaimTypes.Email) ?? "";
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,16 +39,13 @@
             </li>
             <!--Poner -->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        @usuarioName <i class="fas fa-user fa-fw"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Correo del Usuario</a>
-                    @if (ViewData["Correo"] != null)
-                    {
-                        <li>@ViewData["Correo"]</li>
-                    }
+                    <li>@usuarioEmail</li>
                     <li><hr class="dropdown-divider" /></li>
-                    <!--if(Usuario==null){-->
-
                     @if (User.IsInRole("admin") || User.IsInRole("user"))
                     {
                         <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSession">Cerrar sesion</a></li>
