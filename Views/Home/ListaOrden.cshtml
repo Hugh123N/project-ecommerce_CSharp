@@ -12,6 +12,11 @@
     </ol>
 </nav>
 
+@if (User.IsInRole("admin"))
+{
+    <h3>Listado de todas las ordenes</h3>
+}
+
 <table class="table">
     <thead>
         <tr>
