@@ -59,7 +59,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
             // Guardar información del usuario en Session
             HttpContext.Session.SetInt32("UsuarioId", usuario_encontrado.Id);
-            
+            HttpContext.Session.SetString("UsuarioEmail", usuario_encontrado.Email);
+
 			TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
 			TempData["MessageType"] = "success"; // success, error, info, warning
 
@@ -138,7 +139,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             await _context.Usuarios.AddAsync(usuario);
             await _context.SaveChangesAsync();
 
-            TempData["NuevoUsuario"] = "Bienvenido, ya tienes cuenta (no olvides la contraseña)";
+            TempData["NuevoUsuario"] = "Bienvenido, ya tienes cuenta (no olvides la contraseña). Ingresa para comprar";
             TempData["MessageType"] = "info"; // success, error, info, warning
 
             return RedirectToAction("Index", "Home");

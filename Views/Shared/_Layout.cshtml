@@ -33,10 +33,15 @@
                         <i class="fas fa-cart-plus">(<label style="color: darkorange">@(ViewBag.CarritoCount ?? 0)</label>)</i>
                      Carrito</a>
             </li>
+            <!--Poner -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Correo del Usuario</a>
+                    @if (ViewData["Correo"] != null)
+                    {
+                        <li>@ViewData["Correo"]</li>
+                    }
                     <li><hr class="dropdown-divider" /></li>
                     <!--if(Usuario==null){-->
 
@@ -66,13 +71,15 @@
                                     Dashboard
                                 </a>
                             </li>
+                            
 						    @if (User.IsInRole("admin")) {
-						    <li>
+                            <!--<li>
 							    <a class="nav-link" href="@Url.Action("Usuarios","Home")">
 								    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
 								    Usuarios
 							    </a>
 						    </li>
+                            -->
                             }
                         </details>
                         @if (User.IsInRole("admin"))
@@ -84,7 +91,7 @@
                                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                         Categorias
                                     </a>
-                                </li>
+							    </li>
                                 <li>
                                     <a class="nav-link" href="@Url.Action("Index","Producto")">
                                         <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
@@ -93,7 +100,7 @@
                                 </li>
                             </details>
                         }
-                    @if (User.IsInRole("user"))
+                    @if (User.IsInRole("admin") || User.IsInRole("user"))
                     {
                         <details>
                             <summary class="sb-sidenav-menu-heading">Documentos</summary>

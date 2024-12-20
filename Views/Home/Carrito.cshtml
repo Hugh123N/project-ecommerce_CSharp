@@ -48,9 +48,17 @@
                        <h5 class="text-end">$ @ViewBag.Total</h5>
                     </li>
                 </ul>
-                <div class="card-footer ">
-                    <a class="btn btn-primary mb-0" asp-action="OrdenResumen">Ver Orden</a>
-                </div>
+                @if (User.IsInRole("admin"))
+                {
+                    <p>Eres Admin</p>
+                }
+                else
+                {
+                    <div class="card-footer ">
+                        <a class="btn btn-primary mb-0" asp-action="OrdenResumen">Ver Orden</a>
+                    </div>
+                }
+
             </div>
         </div>
     </div>

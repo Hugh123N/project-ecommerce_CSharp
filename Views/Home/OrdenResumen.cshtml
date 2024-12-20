@@ -60,7 +60,13 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <a class="text-end btn btn-outline-success" asp-action="GenerarOrden">Generar Orden</a>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <p>Eres Admin</p>
+                        } else
+                        {
+                            <a class="text-end btn btn-outline-success" asp-action="GenerarOrden">Generar Orden</a>
+                        }
                     </div>
                 </div>
             </div>

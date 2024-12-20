@@ -208,6 +208,14 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 {
                     return NotFound();
                 }
+                //Detalles detalle = await _context.Detalles.Where(u => u.ProductoId == producto.Id && orderID).FirstOrDefaultAsync();
+                List<Detalle> detalles = producto.Detalles.ToList();
+                if (detalles != null || detalles.Count>0) /*de momento, controlla que no salga error, pero debe borrar productos no usados*/
+                {
+                    TempData["Message"] = "No se puede eliminar, esta en uso";
+                    TempData["MessageType"] = "info"; // success, error, info, warning
+                    return RedirectToAction(nameof(Index));
+                }
                 //elimina la imagen de la carpeta
                 if (!string.IsNullOrEmpty(producto.Imagen))
                 {
@@ -217,6 +225,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                         System.IO.File.Delete(filePath);
                     }
                 }
+
+          
                 //elimina el producto de la base de datos
                 _context.Productos.Remove(producto);
                 await _context.SaveChangesAsync();

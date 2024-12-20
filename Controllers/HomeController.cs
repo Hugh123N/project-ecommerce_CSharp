@@ -25,6 +25,14 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
         public async Task<IActionResult> Index()
         {
+            /*int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
+            Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
+            string correo = "";
+
+            usuario.Email = correo;
+
+            ViewData["Correo"] = correo;*/
+
             List<Producto> products = await _context.Productos.ToListAsync();
             return View(products);
         }
@@ -82,7 +90,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return View(detalles);
         }
 
-		[Authorize(Roles = "user")]
+
 		public IActionResult DeleteCart(int id)
         {
             List<Detalle> detallesNueva = new List<Detalle>();
@@ -102,8 +110,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return RedirectToAction("Carrito","Home");
         }
 
-		[Authorize(Roles = "user")]
-		public async Task<IActionResult> OrdenResumen() {
+        //[Authorize(Roles = "user")] /*se bloqueo para la redireccion*/
+        public async Task<IActionResult> OrdenResumen() {
             //obtenemos ID de usuario mediante sesion
             int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
             Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
@@ -136,55 +144,59 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 {
                     TempData["Message"] = "El Usuario no existe.";
                     TempData["MessageType"] = "warning";
-                    return RedirectToAction("Carrito","Home");
+                    return RedirectToAction("Carrito", "Home");
                 }
-                Ordene orden = new Ordene {
-                    Usuario = usuario,
-                    FechaCreacion = DateTime.Now,
-                    Total = sumaTotal,
-                    Numero = numeroCorrelativo
-                };
-                //guardamos orden
-                _context.Add(orden);
-                 await _context.SaveChangesAsync();
                 
-                foreach(var iten in detalles)
-                {
-                    var det = new Detalle
+
+                    Ordene orden = new Ordene
                     {
-                        Nombre = iten.Nombre,
-                        Cantidad = iten.Cantidad,
-                        Precio = iten.Precio,
-                        Total = iten.Total,
-                        Orden = orden,
-                        Producto = iten.Producto
+                        Usuario = usuario,
+                        FechaCreacion = DateTime.Now,
+                        Total = sumaTotal,
+                        Numero = numeroCorrelativo
                     };
-                    _context.Add(det); // Añadimos cada detalle
+                    //guardamos orden
+                    _context.Add(orden);
+                    await _context.SaveChangesAsync();
 
-                    // Actualizar el stock del producto
-                    var producto = await _context.Productos.FindAsync(iten.Producto.Id); 
-                    if (producto != null)
+                    foreach (var iten in detalles)
                     {
-                        producto.Cantidad -= (int) iten.Cantidad; // Reducir el stock
-                        if (producto.Cantidad < 0)
+                        var det = new Detalle
                         {
-                            // Manejar caso de stock insuficiente
-                            TempData["Message"] = $"Stock insuficiente para el producto {producto.Nombre}.";
-                            TempData["MessageType"] = "error";
-                            return RedirectToAction("Index", "Home");
-                        }
-                        _context.Productos.Update(producto); // Actualizar el producto
-                    }
-                }
-                // Guardamos los cambios en la base de datos
-                await _context.SaveChangesAsync();
+                            Nombre = iten.Nombre,
+                            Cantidad = iten.Cantidad,
+                            Precio = iten.Precio,
+                            Total = iten.Total,
+                            Orden = orden,
+                            Producto = iten.Producto
+                        };
+                        _context.Add(det); // Añadimos cada detalle
 
-                detalles = new List<Detalle>();
-               
-                TempData["Message"] = "Orden generado exitosamente.";
-                TempData["MessageType"] = "success";
-                return RedirectToAction("Index","Home");
-             }
+                        // Actualizar el stock del producto
+                        var producto = await _context.Productos.FindAsync(iten.Producto.Id);
+                        if (producto != null)
+                        {
+                            producto.Cantidad -= (int)iten.Cantidad; // Reducir el stock
+                            if (producto.Cantidad < 0)
+                            {
+                                // Manejar caso de stock insuficiente
+                                TempData["Message"] = $"Stock insuficiente para el producto {producto.Nombre}.";
+                                TempData["MessageType"] = "error";
+                                return RedirectToAction("Index", "Home");
+                            }
+                            _context.Productos.Update(producto); // Actualizar el producto
+                        }
+                    }
+                    // Guardamos los cambios en la base de datos
+                    await _context.SaveChangesAsync();
+
+                    detalles = new List<Detalle>();
+
+                    TempData["Message"] = "Orden generado exitosamente.";
+                    TempData["MessageType"] = "success";
+                    return RedirectToAction("Index", "Home");
+                
+            }
             catch
             {
                 TempData["Message"] = "No fue posible generar la orden.";
