@@ -1,9 +1,89 @@
-﻿@{
+﻿@model IEnumerable<proyecto_ecommerce_.NET_MVC_.Models.Producto>
+
+@{
     ViewData["Title"] = "Home Page";
+    var i = 0;
+    foreach(var item in Model){
+        i++;
+    }
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-   
+
+<div class="container mt-1">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
+            <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Index">Home</a></li>
+        </ol>
+
+    </nav>
+
+    <!-- Título -->
+    <h5 class="mb-2">Tienda de ElectroShop <span class="text-muted">(@i productos disponibles)</span></h5>
+  
+    <!-- Productos -->
+    <div class="row">
+        <!-- Tarjeta de producto (dinámica con un for loop) -->
+        <!-- Simula un producto -->
+        @foreach(var item in Model){
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card text-center">
+                <div class="image-container">
+                    <img src="@item.Imagen" class="card-img-top" alt="Producto">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">@item.Nombre</h5>
+                    <p class="card-text fw-bold text-primary">$ @item.Precio</p>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <p>Eres Admin, no puedes comprar</p>
+                        } else
+                        {
+                            <a asp-controller="Producto" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Ver producto</a>
+                        }
+                      
+                </div>
+            </div>
+        </div>
+        }
+    </div>
 </div>
+
+
+
+
+<style>
+    a{
+        color: inherit;
+        text-decoration: inherit;
+    }
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /*local*/
+    .container .row img{
+        padding:5px;
+        border-radius:16px;
+    }
+    .image-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 150px; /* Altura fija del contenedor */
+        overflow: hidden; /* Asegura que el contenido no sobresalga */
+    }
+    .card-img-top{
+        width: 60%; /* Ajusta el ancho según necesites */
+        height: 150px; /* Ajusta la altura según necesites */
+        object-fit: cover; /* Hace que la imagen se adapte al cuadro recortando los bordes si es necesario */
+        object-position: center; /* Centra la imagen dentro del cuadro */
+        display: block; /* Evita el espacio extra en línea, si ocurre */
+    }
+</style>

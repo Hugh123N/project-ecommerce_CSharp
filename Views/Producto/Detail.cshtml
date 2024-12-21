@@ -1,0 +1,107 @@
+﻿@model proyecto_ecommerce_.NET_MVC_.Models.Producto
+
+@{
+
+}
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5">></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Detail">Detalle Producto</a></li>
+    </ol>
+</nav>
+<hr />
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <a>
+                        <img class="img-fluid rounded" src="@Model.Imagen"/>
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <form asp-controller="Home" asp-action="Carrito">
+                        <input type="hidden" name="id" asp-for="Id"/>
+                        <h2  class="card-title text-center">@Model.Nombre</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <h5>Precio: $<span id="precio">@Model.Precio</span></h5>
+                            </li>
+                            <li class="list-group-item">
+                                <p>Descripcion: @Model.Descripcion</p>
+                            </li>
+                            <li class="list-group-item">
+                                <h6>
+                                    Cantidad: 
+                                    <div class="input-group">
+                                        <!-- Botón de disminuir -->
+                                        <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(-1)">-</button>
+                                        <!-- Input de número -->
+                                        <input name="cantidad" type="number"class="form-control text-center"autocomplete="off" min="1" max="5" value="1" id="cantidad"
+                                               onchange="calcularTotal()" />
+                                        <!-- Botón de aumentar -->
+                                        <button class="btn btn-outline-secondary" type="button" onclick="cambiarCantidad(1)">+</button>
+                                    </div>
+                                </h6>
+                            </li>
+                        </ul>
+
+                        <h5 class="total">Total: $<span id="total">@Model.Precio</span></h5>
+
+                        <button type="submit" class="btn btn-warning mt-5">Añadir al carrito <i class="fas fa-cart-plus"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calcularTotal() {
+        // Obtener el precio y la cantidad ingresada
+        const precio = parseFloat(document.getElementById("precio").innerText);
+        const cantidad = parseInt(document.getElementById("cantidad").value);
+
+        // Calcular el total
+        const total = precio * cantidad;
+
+        // Mostrar el total en el elemento correspondiente
+        document.getElementById("total").innerText = total.toFixed(2); // 2 decimales
+    }
+
+    function cambiarCantidad(valor) {
+        const inputCantidad = document.getElementById("cantidad");
+        let cantidadActual = parseInt(inputCantidad.value);
+
+        // Ajustar la cantidad respetando el rango (min y max)
+        if (!isNaN(cantidadActual)) {
+            cantidadActual += valor;
+            if (cantidadActual >= parseInt(inputCantidad.min) && cantidadActual <= parseInt(inputCantidad.max)) {
+                inputCantidad.value = cantidadActual;
+                calcularTotal();
+            }
+        }
+    }
+</script>
+
+<style>
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+/*local*/
+    form{
+        margin-left:0;
+    }
+
+    .total{
+        margin-top:55px;
+    }
+    .input-group{
+        margin-top:20px;
+        width:50%;
+    }
+</style>
