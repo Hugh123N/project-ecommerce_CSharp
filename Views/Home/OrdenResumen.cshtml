@@ -1,0 +1,85 @@
+﻿@model IEnumerable<proyecto_ecommerce_.NET_MVC_.Models.Detalle>
+
+@{
+    var i = 1;
+}
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Index">Home</a></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5">></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5 breadcrumb-item"><a asp-action="Carrito">Carrito</a></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5">></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5 breadcrumb-item active"><a>Orden</a></li>
+    </ol>
+</nav>
+<hr />
+<div class="container mt-2">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header text-center bg-dark text-white p-1">
+                    <h2> Resumen de Orden</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Datos Orden</h5>
+                    <h6>Nombre     :@ViewBag.Usuario.Nombre</h6>
+                    <h6>Email      :@ViewBag.Usuario.Email</h6>
+                    <h6>Direccion  :@ViewBag.Usuario.Direccion </h6>
+                    <h5 class="card-title">Productos</h5>
+                    <div class="alert alert-light" role="alert">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nº</th>
+                                    <th scope="col">Foto</th>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Total($)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var item in Model)
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        <td><img src="@item.Producto?.Imagen" width="50px" height="50px"/></td>
+                                        <td>@item.Nombre</td>
+                                        <td>@item.Precio</td>
+                                        <td>@item.Cantidad</td>
+                                        <td>@item.Total</td>
+                                    </tr>
+                                    i++;
+                                }
+                                <tr>
+                                    <!-- Celda con colspan para abarcar las columnas vacías -->
+                                    <th colspan="5" >Total a Pagar</th>
+                                    <th>$ @ViewBag.Total</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <p>Eres Admin</p>
+                        } else
+                        {
+                            <a class="text-end btn btn-outline-success" asp-action="GenerarOrden">Generar Orden</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<style>
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+</style>
