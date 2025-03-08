@@ -1,0 +1,177 @@
+﻿@model proyecto_ecommerce_.NET_MVC_.ViewModels.UsuarioVM
+
+@{
+	ViewData["Title"] = "Registro de Sesión";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<title>@ViewData["Title"]</title>
+<link rel="stylesheet" href="~/css/Registro.css" />
+
+<div class="row justify-content-center" id="fondoLogin">
+	<div class="col-lg-6">
+		<div class="card p-5 border border-dark" id="tarjetaBase">
+			<div class="card-header border border-secondary text-center fs-3">
+				Registrarse
+			</div>
+			<div class="card-body border border-secondary">
+
+                <form id="login-form" method="post" asp-action="Registro" asp-controller="Login" class="">
+					<p class="text-start">Complete cada recuadro con los datos respectivos, si falta algo se le indicará. Por cierto ni se le ocurra olvidarse 
+						la contraseña (si sabe que se va a olvidar, mejor escribalo en un papel).</p>
+
+                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="Direccion" id="direccion" name="direccion" value="" asp-for="direccion" />
+                    @if(ViewData["ErrorDirec"] != null){
+                        <div id="direcError" class="error-message form-text mb-3">
+                            La direccion debe escribirse bien, sino los pedidos NO llegarán.
+                        </div>
+                    }
+                    <div id="direcError" class="error-message form-text mb-3" >
+                        La direccion debe escribirse bien, sino los pedidos NO llegarán.
+                    </div>
+
+                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="E-mail" id="email" name="email" oninput="validateInputs()" asp-for="email" />
+                    <div id="emailError" class="error-message form-text mb-3" > 
+                        El email no tiene mayusculas, debe llevar un arroba y un ".com" . 
+                    </div>
+
+                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="Nombres" id="nombre" name="nombre" oninput="validateInputs()" asp-for="nombre" />
+                    <div id="nombresError" class="error-message form-text mb-3" > 
+                        Escribir los nombres y apellidos separados. 
+                    </div>
+
+                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="Telefono" id="telefono" name="telefono" oninput="validateInputs()" asp-for="telefono" />
+                    <div id="telefError" class="error-message form-text mb-3" > 
+                        Los telefonos deben seguir el formato +51 #########. 
+                    </div>
+
+                    <input class="form-control mb-3 border border-light text-xl-start" type="text" placeholder="Nombre_usuario" id="username" name="username" oninput="validateInputs()" asp-for="username" /> 
+                    <div id="usernameError" class="error-message form-text mb-3" > 
+                        El usuario nuevo debe tener mínimo 9 y 255 maximo. 
+                    </div>
+
+                    <input class="form-control mb-3  border border-light text-xl-start" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" asp-for="password" />
+                    <div id="passwordError" class="error-message form-text" >
+						La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número.
+					</div>
+
+                    <input class="form-control mb-3  border border-light text-xl-start" type="password" placeholder="Repetir Contraseña" id="password_repe" name="repetirPassword" oninput="validateInputs()" asp-for="repetirPassword" />
+                    <div id="passwordRepeatError" class="error-message form-text" >
+                        La contraseña debe SER IGUAL A LA ANTERIOR, ademas de cumplir los mismos requisitos.
+					</div>
+
+					<div class="container-lg justify-content-center mt-5">
+						<div class="d-grid gap-2 mb-3">
+							<button class="btn btn-primary fs-5" type="submit" id="submitButton" disabled >Crear cuenta</button>
+						</div>
+						<div class="d-grid gap-2">
+							<button class="btn btn-danger fs-5" id="buttomCancelar" type="button" onclick="goBack()">Cancelar</button>
+						</div>
+					</div>
+					@if (ViewData["MCumplir"] != null)
+					{
+                        <div class="alert alert-secondary row justify-content-between" role="alert" style="margin:3px">
+							<span class="col-10">
+								@ViewData["MCumplir"]
+							</span>
+							<button class="btn-close col-2" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					}
+				</form>
+			</div>
+		</div>
+		
+	</div>
+</div>
+<script>
+    function validateInputs() {
+        const email = document.getElementById('email').value;
+        const nombre = document.getElementById('nombre').value;
+        const telefono = document.getElementById('telefono').value;
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const passwordRepe = document.getElementById('password_repe').value;
+
+        const submitButton = document.getElementById('submitButton');
+
+        const direcError = document.getElementById('direcError');
+        const emailError = document.getElementById('emailError');
+        const nombresError = document.getElementById('nombresError');
+        const telefError = document.getElementById('telefError');
+        const usernameError = document.getElementById('usernameError');
+        const passwordError = document.getElementById('passwordError');
+        const passwordRepeatError = document.getElementById('passwordRepeatError');
+
+        // Validar email (contiene .com)
+        const emailPattern = /.*\.com$/;
+
+        // Validar nombres (letras, espacios y caracteres especiales)
+        const nombrePattern = /^[a-zA-Z\sáéíóúÁÉÍÓÚñÑ]+$/;
+
+        // Validar telefono (7-13 dígitos)
+        const telefonoPattern = /^[0-9]{7,13}$/;
+
+        // Validar username (9-255 caracteres, letras y numeros)
+        const usernamePattern = /^[a-zA-Z0-9]{9,255}$/;
+
+        // Validar contraseña (8 caracteres, al menos una letra mayúscula, una letra minúscula y un número)
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+        let isValid = true;
+
+        if (!emailPattern.test(email)) {
+            emailError.style.display = 'block';
+            isValid = false;
+        } else {
+            emailError.style.display = 'none';
+        }
+
+        if (!nombrePattern.test(nombre)) {
+            nombresError.style.display = 'block';
+            isValid = false;
+        } else {
+            nombresError.style.display = 'none';
+        }
+
+        if (!telefonoPattern.test(telefono)) {
+            telefError.style.display = 'block';
+            isValid = false;
+        } else {
+            telefError.style.display = 'none';
+        }
+
+        if (!usernamePattern.test(username)) {
+            usernameError.style.display = 'block';
+            isValid = false;
+        } else {
+            usernameError.style.display = 'none';
+        }
+
+        if (!passwordPattern.test(password)) {
+            passwordError.style.display = 'block';
+            isValid = false;
+        } else {
+            passwordError.style.display = 'none';
+        }
+
+        if (password !== passwordRepe) {
+            passwordRepeatError.style.display = 'block';
+            isValid = false;
+        } else {
+            passwordRepeatError.style.display = 'none';
+        }
+
+        submitButton.disabled = !isValid;
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
+
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</html>

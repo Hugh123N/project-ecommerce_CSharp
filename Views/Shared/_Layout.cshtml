@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims;
+
+@{
+    var usuarioName=User?.FindFirstValue(ClaimTypes.Name) ?? "Login";
+    var usuarioEmail = User?.FindFirstValue(ClaimTypes.Email) ?? "";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,7 +15,10 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/proyecto_ecommerce_.NET_MVC_.styles.css" asp-append-version="true" />
+    <!------------- font awesome para iconos ---------------------------->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <!------ Toastr.js  para mostrar notificaciones -------------->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand-sm navbar-dark bg-dark nav-cabecera">
@@ -16,21 +27,33 @@
              <span class="navbar-toggler-icon"></span>
         </button>
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Logo</a>
+        <a class="navbar-brand ps-3" asp-controller="Home" asp-action="Index">ElectroShop</a>
         <!-- Navbar Search-->
         <!-- Navbar--> 
         <div class="collapse navbar-collapse" id="navbarTogglerDemo">
         <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
             <li class="nav-item">
-                <a class="nav-link active"><i class="fas fa-cart-plus">(<label style="color: darkorange">0</label>)</i>Carrito</a>
+                    <a class="nav-link active" href="@Url.Action("Carrito","Home")">
+                        <i class="fas fa-cart-plus">(<label style="color: darkorange">@(ViewBag.CarritoCount ?? 0)</label>)</i>
+                     Carrito</a>
             </li>
+            <!--Poner -->
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        @usuarioName <i class="fas fa-user fa-fw"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end text-center" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="#!">Correo del Usuario</a>
+                    <li>@usuarioEmail</li>
                     <li><hr class="dropdown-divider" /></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login">Ingresar</a></li>
-                    <li><a class="dropdown-item" href="#!">Cerrar sesion</a></li>
+                    @if (User.IsInRole("admin") || User.IsInRole("user"))
+                    {
+                        <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSession">Cerrar sesion</a></li>
+                    } else
+                    {
+                        <li><a class="dropdown-item" asp-area="" asp-controller="Login" asp-action="Login">Ingresar</a></li>
+                    }
+
                 </ul>
             </li>
         </ul>
@@ -40,6 +63,7 @@
         <div class="contenido-menu ">
             <div class="sb-sidenav-menu menu-container bg-dark">
                     <ul id="menu">
+                        
                         <details>
                             <summary class="sb-sidenav-menu-heading">Resumen</summary>
                             <li>
@@ -48,40 +72,51 @@
                                     Dashboard
                                 </a>
                             </li>
-                            <li>
-                                <a class="nav-link" href="@Url.Action("Usuarios","Home")">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
-                                    Usuarios
-                                </a>
-                            </li>
+                            
+						    @if (User.IsInRole("admin")) {
+                            <!--<li>
+							    <a class="nav-link" href="@Url.Action("Usuarios","Home")">
+								    <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+								    Usuarios
+							    </a>
+						    </li>
+                            -->
+                            }
                         </details>
-                        <details>
-                            <summary class="sb-sidenav-menu-heading">Mantenimiento</summary>
-                            <li>
-                                <a class="nav-link" href="#">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Categorias
-                                </a>
-                            </li>
-                            <li>
-                                <a class="nav-link" href="#">
-                                    <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
-                                    Productos
-                                </a>
-                            </li>
-                        </details>
+                        @if (User.IsInRole("admin"))
+                        {
+                            <details>
+                                <summary class="sb-sidenav-menu-heading">Mantenimiento</summary>
+                                <li>
+                                    <a class="nav-link" href="#">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                        Categorias
+                                    </a>
+							    </li>
+                                <li>
+                                    <a class="nav-link" href="@Url.Action("Index","Producto")">
+                                        <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                                        Productos
+                                    </a>
+                                </li>
+                            </details>
+                        }
+                    @if (User.IsInRole("admin") || User.IsInRole("user"))
+                    {
                         <details>
                             <summary class="sb-sidenav-menu-heading">Documentos</summary>
                             <li>
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" asp-controller="Home" asp-action="ListaOrden">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Factura
                             </a>
                             </li>
                         </details>
+                    }
+                    
                     </ul>
                 </div>
-                <button class="salir" >✖️ Salir</button>
+            <!-- <button class="salir" >✖️ Salir</button>-->
         </div>
         <div id="layoutSidenav_content">
             <main>
@@ -92,7 +127,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Tu Aplicacion Web 2024</div>
+                        <div class="text-muted">Copyright &copy; ElectroShop 2024</div>
                         <div>
                             <a href="#">Privacy Policy</a>
                             &middot;
@@ -107,8 +142,69 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <!--Toastr.js  para mostrar notificaciones-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+
+<script>
+    /*-------------Toastr.js  para mostrar notificaciones------------ */
+    $(document).ready(function () {
+        var message = '@TempData["Message"]';
+        var messageType = '@TempData["MessageType"]'; // success, error, info, warning
+
+        if (message) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "2000" // Duración de 2 segundos
+            };
+
+            toastr[messageType](message); // Muestra el mensaje
+        }
+    });
+</script>
+
+<script>
+    /*-------------Toastr.js  para mostrar notificaciones------------ */
+    $(document).ready(function () {
+        var message = '@TempData["SuccessMessage"]';
+        var messageType = '@TempData["MessageType"]'; // success, error, info, warning
+
+        if (message) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000" // Duración de 5 segundos
+            };
+
+            toastr[messageType](message); // Muestra el mensaje
+        }
+    });
+</script>
+
+<script>
+    /*-------------Toastr.js  para mostrar notificaciones------------ */
+    $(document).ready(function () {
+        var message = '@TempData["NuevoUsuario"]';
+        var messageType = '@TempData["MessageType"]'; // success, error, info, warning
+
+        if (message) {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "8000" // Duración de 8 segundos
+            };
+
+            toastr[messageType](message); // Muestra el mensaje
+        }
+    });
+</script>
 
 
