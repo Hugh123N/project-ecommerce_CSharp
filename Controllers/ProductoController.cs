@@ -68,7 +68,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                     if(img != null && img.Length > 0)
                     {
                         // Genera un nombre único para el archivo
-                        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(img.FileName);
+                        var fileName = producto.Nombre + Path.GetExtension(img.FileName);
 
                         // Ruta donde se guardará la imagen
                         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
