@@ -54,7 +54,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Precio)
                 </td>
-                @if(item.Estado == "activo")
+                @if(item.Estado == "Activo")
                 {
                     <td style="color:green">
                         @Html.DisplayFor(modelItem => item.Estado)
@@ -68,7 +68,13 @@
                 }
                 <td>
                     <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
-                    <!-- Botón para abrir el modal -->
+                    @if(item.Estado == "Activo")
+                    {
+                        <a class="btn btn-warning" asp-action="Estado" asp-route-id="@item.Id">Desactivar</a>
+                    } else{
+                        <a class="btn btn-warning" asp-action="Estado" asp-route-id="@item.Id">Activar</a>
+                    }
+                        <!-- Botón para abrir el modal -->
                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">Eliminar</button>
                 </td>
             </tr>
