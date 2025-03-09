@@ -13,12 +13,12 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
     public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly EcommerceCursoContext _context;
+        private readonly EcommerceNetContext _context;
 
         public static List<Detalle> detalles=new List<Detalle>();
         static double sumaTotal = 0.0;
 
-        public HomeController(ILogger<HomeController> logger, EcommerceCursoContext context)
+        public HomeController(ILogger<HomeController> logger, EcommerceNetContext context)
         {
             _logger = logger;
             _context = context;
@@ -65,7 +65,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             Detalle detalle=new Detalle
             {
                 Cantidad = cantidad,
-                Nombre = producto.Nombre,
                 Precio = producto.Precio,
                 Total = cantidad * producto.Precio,
                 Producto = producto
@@ -174,7 +173,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                     {
                         var det = new Detalle
                         {
-                            Nombre = iten.Nombre,
                             Cantidad = iten.Cantidad,
                             Precio = iten.Precio,
                             Total = iten.Total,

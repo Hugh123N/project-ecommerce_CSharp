@@ -1,0 +1,93 @@
+﻿@model IEnumerable<proyecto_ecommerce_.NET_MVC_.Models.Categoria>
+
+@{
+}
+
+
+@{
+    var i = 1;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a href="@Url.Action("Index","Home")">Home</a></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5">></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Index">Categoria</a></li>
+    </ol>
+</nav>
+
+<div class="nav-index">
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Registrar Nueva Categoria</a>
+    </p>
+    <form asp-controller="Categoria" asp-action="Index">
+        <p>
+            <input type="text" name="buscar" class="form-control-sm" placeholder="Ingrese Nombre" />
+            <input type="submit" value="Buscar" class="btn btn-outline-success" />
+        </p>
+    </form>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nº</th>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    ho
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    activo
+                </td>
+                <td>
+                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    <!-- Botón para abrir el modal -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">Desabilitar</button>
+                </td>
+            </tr>
+            i++;
+        }
+    </tbody>
+</table>
+
+
+<style>
+    a {
+        color: inherit;
+        text-decoration: inherit;
+    }
+
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 1rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    /*local*/
+    .nav-index {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
+
+
+

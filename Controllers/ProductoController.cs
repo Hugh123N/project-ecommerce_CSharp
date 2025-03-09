@@ -10,11 +10,11 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
     public class ProductoController : BaseController
     {
-        private readonly EcommerceCursoContext _context;
+        private readonly EcommerceNetContext _context;
 
-        public ProductoController(EcommerceCursoContext ecommerceCursoContext)
+        public ProductoController(EcommerceNetContext ecommerceNetContext)
         {
-            _context =ecommerceCursoContext;
+            _context =ecommerceNetContext;
         }
 
         [Authorize(Roles = "admin")]
@@ -52,7 +52,11 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 		[Authorize(Roles = "admin")]
 		// GET: ProductoController/Create
 		public ActionResult Create()
-        {   
+        {
+            var categorias =  _context.Categorias.ToList();
+            if (categorias != null) { 
+                ViewBag.categorias = categorias;
+            }
             return View();
         }
 
