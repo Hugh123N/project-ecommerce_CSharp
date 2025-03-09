@@ -54,9 +54,18 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Precio)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Estado)
-                </td>
+                @if(item.Estado == "activo")
+                {
+                    <td style="color:green">
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                }
+                else
+                {
+                    <td style="color:red">
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                }
                 <td>
                     <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
                     <!-- Botón para abrir el modal -->

@@ -45,18 +45,29 @@
                     @i
                 </td>
                 <td>
-                    ho
+                    <img src="@item.Imagen" width="50px" height="50px" />
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
-                <td>
-                    activo
-                </td>
+                @if(item.Estado == "Activo"){
+                    <td style="color:green">
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                }else{
+                    <td style="color:red">
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                }
                 <td>
                     <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
                     <!-- Botón para abrir el modal -->
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">Desabilitar</button>
+                    @if(item.Estado == "Activo")
+                    {
+                        <a type="button" class="btn btn-warning" asp-action="Estado" asp-route-id="@item.Id">Desactivar</a>
+                    }else{
+                        <a type="button" class="btn btn-warning" asp-action="Estado" asp-route-id="@item.Id">Activar</a>
+                    }
                 </td>
             </tr>
             i++;

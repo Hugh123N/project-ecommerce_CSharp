@@ -104,6 +104,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                     return NotFound();
                 }
                 producto.Usuario = usuario;
+                producto.Estado = "Activo";
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
                 
@@ -125,6 +126,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 		[Authorize(Roles = "admin")]
 		public async Task<IActionResult> Edit(int id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -133,21 +135,28 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             if (producto == null)
                 return NotFound();
 
+            var categorias = _context.Categorias.ToList();
+            if (categorias != null)
+            {
+                ViewBag.categorias = categorias;
+            }
+
+
             return View(producto);
         }
 
-		// POST: ProductoController/Edit/5
-		[Authorize(Roles = "admin")]
-		[HttpPost]
+        // POST: ProductoController/Edit/5
+        [Authorize(Roles = "admin")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Producto producto, IFormFile img)
+        public async Task<IActionResult> Edit(Producto producto, IFormFile img)
         {
             if (producto.Id == null)
             {
                 return NotFound();
             }
             // Obtenemos el producto original para manejar la imagen
-            var productoOriginal = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            var productoOriginal = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == producto.Id);
 
             if (productoOriginal == null)
             {
@@ -193,6 +202,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             // Actualizamos el producto en la base de datos
             try
             {
+                producto.Estado = productoOriginal.Estado;
+                producto.UsuarioId = productoOriginal.UsuarioId;
                 _context.Productos.Update(producto);
                 await _context.SaveChangesAsync();
                 //mensaje de exito que se mostrara en la vista con Toastr.js

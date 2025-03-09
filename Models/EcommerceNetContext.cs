@@ -38,9 +38,14 @@ public partial class EcommerceNetContext : DbContext
     /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=DESKTOP-LNE8K5Q\\SQLEXPRESS; DataBase=ecommerceNet; Integrated Security=True; TrustServerCertificate=True");
-
+    
+    USO DE SCAFFOLDING
     scaffold-dbContext "Server=DESKTOP-LNE8K5Q\SQLEXPRESS; DataBase=ecommerceNet; Integrated Security=True; TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutPutDir Models -force
      
+    USO DE MIGRATION
+    dotnet ef migrations add AgregarCamposCategoria   1.- crea la migracion
+
+    dotnet ef database update        2.- actualiza la base de datos con nuevos cambios
      */
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
