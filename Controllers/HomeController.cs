@@ -186,13 +186,14 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                         if (producto != null)
                         {
                             producto.Cantidad -= (int)iten.Cantidad; // Reducir el stock
-                            if (producto.Cantidad < 0)
+                            if (producto.Cantidad < 5)
                             {
                                 // Manejar caso de stock insuficiente
                                 TempData["Message"] = $"Stock insuficiente para el producto {producto.Nombre}.";
                                 TempData["MessageType"] = "error";
-                                return RedirectToAction("Index", "Home");
+                                return RedirectToAction("Carrito", "Home");
                             }
+                            
                             _context.Productos.Update(producto); // Actualizar el producto
                         }
                     }
@@ -204,7 +205,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                     TempData["Message"] = "Orden generado exitosamente.";
                     TempData["MessageType"] = "success";
                     return RedirectToAction("Index", "Home");
-                
             }
             catch
             {
