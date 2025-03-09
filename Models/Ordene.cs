@@ -7,7 +7,9 @@ public partial class Ordene
 {
     public int Id { get; set; }
 
-    public DateTime? FechaCreacion { get; set; }
+    public int UsuarioId { get; set; }
+
+    public DateTime FechaCreacion { get; set; }
 
     public DateTime? FechaRecivida { get; set; }
 
@@ -15,9 +17,11 @@ public partial class Ordene
 
     public double Total { get; set; }
 
-    public int? UsuarioId { get; set; }
-
     public virtual ICollection<Detalle> Detalles { get; set; } = new List<Detalle>();
 
-    public virtual Usuario? Usuario { get; set; }
+    public virtual ICollection<Envio> Envios { get; set; } = new List<Envio>();
+
+    public virtual ICollection<Pago> Pagos { get; set; } = new List<Pago>();
+
+    public virtual Usuario Usuario { get; set; } = null!;
 }

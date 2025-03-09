@@ -1,32 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.AspNetCore.Mvc;
-using proyecto_ecommerce_.NET_MVC_.Controllers;
-using System.ComponentModel.DataAnnotations;
-
-
 
 namespace proyecto_ecommerce_.NET_MVC_.Models;
 
 public partial class Usuario
 {
-    [Key]
     public int Id { get; set; }
 
-    public string? Direccion { get; set; }
+    public string Nombre { get; set; } = null!;
 
-    public string? Email { get; set; }
+    public string Email { get; set; } = null!;
 
-    public string? Nombre { get; set; }
+    public string Password { get; set; } = null!;
 
-    public string? Password { get; set; }
+    public string Tipo { get; set; } = null!;
+
+    public string Username { get; set; } = null!;
 
     public string? Telefono { get; set; }
 
-    public string? Tipo { get; set; }
+    public string? Direccion { get; set; }
 
-    public string? Username { get; set; }
+    public virtual ICollection<Carrito> Carritos { get; set; } = new List<Carrito>();
+
+    public virtual ICollection<Direccione> Direcciones { get; set; } = new List<Direccione>();
+
+    public virtual ICollection<Favorito> Favoritos { get; set; } = new List<Favorito>();
 
     public virtual ICollection<Ordene> Ordenes { get; set; } = new List<Ordene>();
 

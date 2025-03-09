@@ -39,7 +39,11 @@
                             <p>Eres Admin, no puedes comprar</p>
                         } else
                         {
-                            <a asp-controller="Producto" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Ver producto</a>
+                            if(item.Estado == "Activo"){
+                                <a asp-controller="Producto" asp-action="Detail" asp-route-id="@item.Id" class="btn btn-primary">Ver producto</a>
+                            }else{
+                                <p style="color:red">Producto Agotado</p>
+                            }
                         }
                       
                 </div>

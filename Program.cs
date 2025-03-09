@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 //conexion a base de datos desde secretos de usuario
-builder.Services.AddDbContext<EcommerceCursoContext>(options => options.UseSqlServer(builder.Configuration["ConexionString"]));
+builder.Services.AddDbContext<EcommerceNetContext>(options => options.UseSqlServer(builder.Configuration["ConexionString"]));
 
 // Agrega servicios para la sesión y cookies ********************* CONFIGURACION DE SESSION y Cookies Authentication
 //2- CONFIG PARA COOKIES  

@@ -1,4 +1,4 @@
-﻿@model proyecto_ecommerce_.NET_MVC_.Models.Producto;
+﻿@model proyecto_ecommerce_.NET_MVC_.Models.Categoria;
 
 @{
 
@@ -8,7 +8,7 @@
     <ol class="breadcrumb il-flex il-flex-wrap il-items-center il-gap-1.5 il-break-words il-text-sm il-text-muted-foreground sm:il-gap-2.5">
         <li class="il-inline-flex il-items-center il-gap-1.5"><a href="@Url.Action("Index","Home")">Home</a></li>
         <li class="il-inline-flex il-items-center il-gap-1.5">></li>
-        <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Index">Producto</a></li>
+        <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Index">Categoria</a></li>
         <li class="il-inline-flex il-items-center il-gap-1.5">></li>
         <li class="il-inline-flex il-items-center il-gap-1.5"><a asp-action="Create">Create</a></li>
     </ol>
@@ -25,33 +25,8 @@
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
             <div class="form-group mb-2">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="Cantidad" class="control-label"></label>
-                <input asp-for="Cantidad" class="form-control" type="number"/>
-                <span asp-validation-for="Cantidad" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="Precio" class="control-label"></label>
-                <input asp-for="Precio" class="form-control" />
-                <span asp-validation-for="Precio" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
-                <label asp-for="CategoriaId" class="control-label"></label>
-                <select asp-for="CategoriaId" class="form-control" >
-                    <option value="">Selecciona una Categoria</option>
-                    @foreach(var cat in ViewBag.categorias as List<Categoria>){
-                        <option value="@cat.Id">@cat.Nombre</option>
-                    }
-                </select>
-                <span asp-validation-for="CategoriaId" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-2">
                 <label for="img" class="control-label"></label>
-                <input id="img" name="img" class="form-control" type="file" accept="image/*"/>
+                <input id="img" name="img" class="form-control" type="file" accept="image/*" />
             </div>
             <div class="form-group mb-2">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -60,6 +35,7 @@
         </form>
     </div>
 </div>
+
 
 @section Scripts {
     @{

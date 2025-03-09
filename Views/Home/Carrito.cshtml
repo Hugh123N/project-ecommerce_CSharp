@@ -29,7 +29,7 @@
                     <tbody>
                         @foreach(var item in Model){
                             <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Producto.Nombre)</td>
                             <td>@Html.DisplayFor(modelItem => item.Precio)</td>
                             <td>@Html.DisplayFor(modelItem => item.Cantidad)</td>
                             <td>@Html.DisplayFor(modelItem => item.Total)</td>

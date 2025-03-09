@@ -14,8 +14,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
     public class LoginController : BaseController
     {
-        private readonly EcommerceCursoContext _context;
-        public LoginController(EcommerceCursoContext appDBContext) 
+        private readonly EcommerceNetContext _context;
+        public LoginController(EcommerceNetContext appDBContext) 
         { 
             _context = appDBContext; 
         }

@@ -10,11 +10,11 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
     public class ProductoController : BaseController
     {
-        private readonly EcommerceCursoContext _context;
+        private readonly EcommerceNetContext _context;
 
-        public ProductoController(EcommerceCursoContext ecommerceCursoContext)
+        public ProductoController(EcommerceNetContext ecommerceNetContext)
         {
-            _context =ecommerceCursoContext;
+            _context =ecommerceNetContext;
         }
 
         [Authorize(Roles = "admin")]
@@ -52,7 +52,11 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 		[Authorize(Roles = "admin")]
 		// GET: ProductoController/Create
 		public ActionResult Create()
-        {   
+        {
+            var categorias =  _context.Categorias.ToList();
+            if (categorias != null) { 
+                ViewBag.categorias = categorias;
+            }
             return View();
         }
 
@@ -100,6 +104,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                     return NotFound();
                 }
                 producto.Usuario = usuario;
+                producto.Estado = "Activo";
                 _context.Add(producto);
                 await _context.SaveChangesAsync();
                 
@@ -121,6 +126,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 		[Authorize(Roles = "admin")]
 		public async Task<IActionResult> Edit(int id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -129,21 +135,28 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             if (producto == null)
                 return NotFound();
 
+            var categorias = _context.Categorias.ToList();
+            if (categorias != null)
+            {
+                ViewBag.categorias = categorias;
+            }
+
+
             return View(producto);
         }
 
-		// POST: ProductoController/Edit/5
-		[Authorize(Roles = "admin")]
-		[HttpPost]
+        // POST: ProductoController/Edit/5
+        [Authorize(Roles = "admin")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Producto producto, IFormFile img)
+        public async Task<IActionResult> Edit(Producto producto, IFormFile img)
         {
             if (producto.Id == null)
             {
                 return NotFound();
             }
             // Obtenemos el producto original para manejar la imagen
-            var productoOriginal = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+            var productoOriginal = await _context.Productos.AsNoTracking().FirstOrDefaultAsync(p => p.Id == producto.Id);
 
             if (productoOriginal == null)
             {
@@ -189,6 +202,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             // Actualizamos el producto en la base de datos
             try
             {
+                producto.Estado = "Activo";
+                producto.UsuarioId = productoOriginal.UsuarioId;
                 _context.Productos.Update(producto);
                 await _context.SaveChangesAsync();
                 //mensaje de exito que se mostrara en la vista con Toastr.js
@@ -246,6 +261,33 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 TempData["MessageType"] = "success"; // success, error, info, warning    
 
                 return RedirectToAction(nameof(Index));
+        }
+   
+        //GET: ProductoController/Estado/id
+        public async Task<IActionResult> Estado(int id)
+        {
+            try
+            {
+                var producto = await _context.Productos.FindAsync(id);
+                if (producto == null)
+                    return NotFound();
+
+                if (producto.Estado == "Activo")
+                    producto.Estado = "Desactivado";
+                else
+                    producto.Estado = "Activo";
+
+                //guardamos en la BD
+                _context.Update(producto);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }catch{
+                //mensaje de error que se mostrara en la vista con Toastr.js
+                TempData["Message"] = "Ocurrió un error al actualizar el Estado.";
+                TempData["MessageType"] = "error"; // success, error, info, warning
+                throw;
+            }
         }
     }
 }
