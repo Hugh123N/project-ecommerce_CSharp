@@ -2,6 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using proyecto_ecommerce_.NET_MVC_.Models;
 //1- 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Windows.Input;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +37,25 @@ builder.Services.AddSession(options =>
 // Agrega servicios de controladores y vistas
 builder.Services.AddControllersWithViews();
 
+/*****  agregamos config JWT  *****/
+var key = builder.Configuration["Jwt:key"];
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(option =>
+    {
+        option.RequireHttpsMetadata = false;
+        option.SaveToken = true;
+        option.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            ValidateIssuer = true,
+            ValidateAudience = false,
+            ClockSkew = TimeSpan.Zero,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!))
+        };
+    });
+
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Habilitar sesiones en la aplicación ******** INICILIAZANDO EL USO DE SESSION
@@ -56,6 +79,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//inicializa autenticaion jwt
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
