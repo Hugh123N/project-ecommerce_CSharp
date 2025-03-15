@@ -9,15 +9,20 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Azure.Core;
+using proyecto_ecommerce_.NET_MVC_.service;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
     public class LoginController : BaseController
     {
         private readonly EcommerceNetContext _context;
-        public LoginController(EcommerceNetContext appDBContext) 
+        private readonly service.AuthenticationService _authenticationService;
+        public LoginController(EcommerceNetContext appDBContext, service.AuthenticationService auth) 
         { 
-            _context = appDBContext; 
+            _context = appDBContext;
+            _authenticationService = auth;
         }
 
 
@@ -40,8 +45,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             if (usuario_encontrado == null)
             {
                 TempData["Message"] = "No existe usuario o contraseña";
-				TempData["MessageType"] = "warning"; // success, error, info, warning
-				return View();
+                TempData["MessageType"] = "warning"; // success, error, info, warning
+                return View();
             }
 
             //config cookies -> es para crear las cookies y gestionar nombre, username y tipo(rol)
@@ -55,18 +60,17 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             claims.Add(new Claim(ClaimTypes.Role, usuario_encontrado.Tipo));
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            
+
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
 
             // Guardar información del usuario en Session
             HttpContext.Session.SetInt32("UsuarioId", usuario_encontrado.Id);
 
-			TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
-			TempData["MessageType"] = "success"; // success, error, info, warning
+            TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
+            TempData["MessageType"] = "success"; // success, error, info, warning
 
-			return RedirectToAction("Index", "Home");
-
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -151,6 +155,11 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         {
             //cerramos cookies ->   Out para salir
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            // Cerrar sesión de autenticación
+            await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
+
+            // Eliminar el token de la sesión
+            HttpContext.Session.Remove("JWTToken");
 
             HttpContext.Session.Remove("UsuarioId");
             HttpContext.Session.Clear(); // Borra toda la información en Session
@@ -160,6 +169,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
+        
     }
 }

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Windows.Input;
 using System.Text;
+using proyecto_ecommerce_.NET_MVC_.service;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +38,9 @@ builder.Services.AddSession(options =>
 /********************************** Fin Session *********************************************+*/
 // Agrega servicios de controladores y vistas
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<AuthenticationService>();
 
-/*****  agregamos config JWT  *****/
+/***** 2 -  agregamos config JWT  *****/
 var key = builder.Configuration["Jwt:key"];
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(option =>
@@ -50,9 +53,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = true,
             ValidateAudience = false,
             ClockSkew = TimeSpan.Zero,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key!)),
+            RoleClaimType = ClaimTypes.Role  // IMPORTANTE: Configurar validación por rol
         };
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin"));
+    options.AddPolicy("UserPolicy", policy => policy.RequireRole("user"));
+});
+
 
 builder.Services.AddHttpClient();
 
