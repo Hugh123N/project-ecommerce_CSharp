@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using proyecto_ecommerce_.NET_MVC_.Models;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
-    [Authorize(Roles = "admin")]
+    [Authorize(AuthenticationSchemes =CookieAuthenticationDefaults.AuthenticationScheme ,Roles = "admin")]
     public class CategoriaController : BaseController
     {
         private readonly EcommerceNetContext _context;

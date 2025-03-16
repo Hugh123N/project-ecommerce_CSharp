@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
@@ -26,14 +28,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
         public async Task<IActionResult> Index()
         {
-            /*int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
-            Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
-            string correo = "";
-
-            usuario.Email = correo;
-
-            ViewData["Correo"] = correo;*/
-
             List<Producto> products = await _context.Productos.ToListAsync();
             return View(products);
         }
@@ -47,14 +41,17 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return View("../Login/Login");
         }
 
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "user")]
         public IActionResult Carrito()
         {
+
             ViewBag.CarritoCount = detalles.Count;
             ViewBag.Total = sumaTotal;
             return View(detalles);
         }
 
         [HttpPost]
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "user")]
         public async Task<IActionResult> Carrito(int id, int cantidad)
         {
             var producto = await _context.Productos.FindAsync(id);
@@ -86,8 +83,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return View(detalles);
         }
 
-
-		public IActionResult DeleteCart(int id)
+        //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "user")]
+        public IActionResult DeleteCart(int id)
         {
             List<Detalle> detallesNueva = new List<Detalle>();
             foreach(var item in detalles)
@@ -118,7 +115,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
             int? idUsu = int.Parse(idClaim);
             //obtenemos el usuario desde la base de datos
-            Usuario usuario = await _context.Usuarios.FindAsync(idUsu);
+            Usuario? usuario = await _context.Usuarios.FindAsync(idUsu);
             if(usuario == null) {
                 TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
                 TempData["MessageType"] = "warning";
@@ -130,8 +127,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return View(detalles);
         }
 
-		[Authorize(Roles = "user")]
-		public async Task<IActionResult> GenerarOrden()
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "user")]
+        public async Task<IActionResult> GenerarOrden()
         {
             try {
                 //obtener el numero correlativo
@@ -150,7 +147,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                     return RedirectToAction("Login", "Login");
                 }
                 int? idUsu = int.Parse(idClaim);
-                Usuario usuario = await _context.Usuarios.FindAsync(idUsu);
+                Usuario? usuario = await _context.Usuarios.FindAsync(idUsu);
                 if (usuario == null)
                 {
                     TempData["Message"] = "El Usuario no existe.";
@@ -281,8 +278,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 throw;
             }
         }
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

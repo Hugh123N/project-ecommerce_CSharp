@@ -9,6 +9,9 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Azure.Core;
+using proyecto_ecommerce_.NET_MVC_.service;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
@@ -17,9 +20,8 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         private readonly EcommerceNetContext _context;
         public LoginController(EcommerceNetContext appDBContext) 
         { 
-            _context = appDBContext; 
+            _context = appDBContext;
         }
-
 
         [HttpGet]
 		public IActionResult Registro()
@@ -35,13 +37,13 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 		[HttpPost]
         public async Task<IActionResult> Login(UsuarioVM modelo)
         {
-            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username && u.Password == modelo.password).FirstOrDefaultAsync();
+            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username).FirstOrDefaultAsync();
 
-            if (usuario_encontrado == null)
+            if (usuario_encontrado == null && !BCrypt.Net.BCrypt.Verify(modelo.password, usuario_encontrado?.Password))
             {
                 TempData["Message"] = "No existe usuario o contraseña";
-				TempData["MessageType"] = "warning"; // success, error, info, warning
-				return View();
+                TempData["MessageType"] = "warning"; // success, error, info, warning
+                return View();
             }
 
             //config cookies -> es para crear las cookies y gestionar nombre, username y tipo(rol)
@@ -55,18 +57,17 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             claims.Add(new Claim(ClaimTypes.Role, usuario_encontrado.Tipo));
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            
+
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
 
             // Guardar información del usuario en Session
             HttpContext.Session.SetInt32("UsuarioId", usuario_encontrado.Id);
 
-			TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
-			TempData["MessageType"] = "success"; // success, error, info, warning
+            TempData["SuccessMessage"] = "Inicio de sesión exitoso.";
+            TempData["MessageType"] = "success"; // success, error, info, warning
 
-			return RedirectToAction("Index", "Home");
-
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -133,7 +134,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 Nombre = modelo.nombre,
                 Telefono = modelo.telefono,
                 Username = modelo.username,
-                Password = modelo.password,
+                Password = BCrypt.Net.BCrypt.HashPassword(modelo.password), //encripta password
                 Tipo = "user"
             };
 
@@ -160,6 +161,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-
+        
     }
 }
