@@ -18,13 +18,10 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
     public class LoginController : BaseController
     {
         private readonly EcommerceNetContext _context;
-        private readonly service.AuthenticationService _authenticationService;
-        public LoginController(EcommerceNetContext appDBContext, service.AuthenticationService auth) 
+        public LoginController(EcommerceNetContext appDBContext) 
         { 
             _context = appDBContext;
-            _authenticationService = auth;
         }
-
 
         [HttpGet]
 		public IActionResult Registro()
@@ -40,9 +37,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 		[HttpPost]
         public async Task<IActionResult> Login(UsuarioVM modelo)
         {
-            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username && u.Password == modelo.password).FirstOrDefaultAsync();
+            Usuario? usuario_encontrado = await _context.Usuarios.Where(u => u.Username == modelo.username).FirstOrDefaultAsync();
 
-            if (usuario_encontrado == null)
+            if (usuario_encontrado == null && !BCrypt.Net.BCrypt.Verify(modelo.password, usuario_encontrado?.Password))
             {
                 TempData["Message"] = "No existe usuario o contraseña";
                 TempData["MessageType"] = "warning"; // success, error, info, warning
@@ -137,7 +134,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
                 Nombre = modelo.nombre,
                 Telefono = modelo.telefono,
                 Username = modelo.username,
-                Password = modelo.password,
+                Password = BCrypt.Net.BCrypt.HashPassword(modelo.password), //encripta password
                 Tipo = "user"
             };
 
@@ -155,11 +152,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         {
             //cerramos cookies ->   Out para salir
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            // Cerrar sesión de autenticación
-            await HttpContext.SignOutAsync(JwtBearerDefaults.AuthenticationScheme);
-
-            // Eliminar el token de la sesión
-            HttpContext.Session.Remove("JWTToken");
 
             HttpContext.Session.Remove("UsuarioId");
             HttpContext.Session.Clear(); // Borra toda la información en Session

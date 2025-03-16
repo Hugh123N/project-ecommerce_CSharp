@@ -2,53 +2,51 @@
     ViewData["Title"] = "Inicio de Sesión";
 }
 
-<!DOCTYPE html>
-<html lang="es">
-	<title>@ViewData["Title"]</title>
-	<link rel="stylesheet" href="~/css/Login.css" />
+<title>@ViewData["Title"]</title>
+<link rel="stylesheet" href="~/css/Login.css" />
 
+<div class="row justify-content-center" id="fondoLogin">
+    <div class="col-lg-6">
+		<div class="card p-5 border border-dark" id="tarjetaBase">
+		<div class="card-header border border-secondary text-center fs-3 fw-bolder">
+				Iniciar Sesión
+			</div>
+			<div class="card-body border border-secondary">
+				<form id="login-form" method="post" asp-action="Login" asp-controller="Login" onsubmit="checkEmptyFields(event)" class="">
 
-	<div class="row justify-content-center" id="fondoLogin">
-        <div class="col-lg-6">
-			<div class="card p-5 border border-dark" id="tarjetaBase">
-			<div class="card-header border border-secondary text-center fs-3 fw-bolder">
-					Iniciar Sesión
-				</div>
-				<div class="card-body border border-secondary">
-					<form id="login-form" method="post" asp-action="Login" asp-controller="Login" onsubmit="checkEmptyFields(event)" class="">
+					<input class="form-control mb-1  border border-light text-xl-start" type="text" placeholder="Nombre_usuario" id="username" name="username" oninput="validateInputs()" />
+					<div id="usernameError" class="error-message form-text mb-1">
+						El Nombre de Usuario debe tener entre 9 y 255 caracteres.
+					</div>
 
-						<input class="form-control mb-1  border border-light text-xl-start" type="text" placeholder="Nombre_usuario" id="username" name="username" oninput="validateInputs()" />
-						<div id="usernameError" class="error-message form-text mb-1">
-							El Nombre de Usuario debe tener entre 9 y 255 caracteres.
-						</div>
-
-						<input class="form-control mb-1  border border-light text-xl-start" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" />
-						<div id="passwordError" class="error-message form-text">
-							La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número.
-						</div>
+					<input class="form-control mb-1  border border-light text-xl-start" type="password" placeholder="Contraseña" id="password" name="password" oninput="validateInputs()" />
+					<div id="passwordError" class="error-message form-text">
+						La contraseña debe tener al menos 8 caracteres, incluir al menos una letra mayúscula, una letra minúscula y un número.
+					</div>
 						
 
-					<div class="container-lg justify-content-center mt-3">
-							<div class="d-grid gap-2 mb-3">
-							<button class="btn btn-primary fs-5" type="submit" id="submitButton" disabled>Iniciar Sesión</button>
-							</div>
-							<div class="d-grid gap-2">
-							<button class="btn btn-danger fs-5" type="button" id="buttomCancelar" onclick="goBack()">Cancelar</button>
-							</div>
+				<div class="container-lg justify-content-center mt-3">
+						<div class="d-grid gap-2 mb-3">
+						<button class="btn btn-primary fs-5" type="submit" id="submitButton" disabled>Iniciar Sesión</button>
 						</div>
+						<div class="d-grid gap-2">
+						<button class="btn btn-danger fs-5" type="button" id="buttomCancelar" onclick="goBack()">Cancelar</button>
+						</div>
+					</div>
 						
-					</form>
-				</div>
+				</form>
 			</div>
-			<br />
+		</div>
+		<br />
 
-			<div class="container-lg p-3" id="glass-icon">
-				<h3 class="text-white fs-5" onclick="">Si no tienes cuenta....puedes registrarte gratis :D </h3>
-			<button class="btn btn-outline-success border border-4"><a id="registrarse" class="text-black dropdown-item" asp-area="" asp-controller="Login" asp-action="Registro">Registrarse</a></button>
-			</div>
+		<div class="container-lg p-3" id="glass-icon">
+			<h3 class="text-white fs-5" onclick="">Si no tienes cuenta registrate yaa!</h3>
+		<button class="btn btn-outline-success border border-4"><a id="registrarse" class="text-black dropdown-item" asp-area="" asp-controller="Login" asp-action="Registro">Registrarse</a></button>
+		</div>
 
-        </div>
-	</div>
+    </div>
+</div>
+
 <script>
 	function validateInputs() {
 		const username = document.getElementById('username').value;
@@ -87,9 +85,5 @@
 	}
 	
 </script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-
-</html>
 

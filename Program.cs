@@ -41,7 +41,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<AuthenticationService>();
 
 /***** 2 -  agregamos config JWT  *****/
-var key = builder.Configuration["Jwt:key"];
+/*var key = builder.Configuration["Jwt:key"];
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(option =>
     {
@@ -62,10 +62,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin"));
     options.AddPolicy("UserPolicy", policy => policy.RequireRole("user"));
-});
-
-
-builder.Services.AddHttpClient();
+});*/
 
 var app = builder.Build();
 

@@ -28,14 +28,6 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
         public async Task<IActionResult> Index()
         {
-            /*int? idUsuario = HttpContext.Session.GetInt32("UsuarioId");
-            Usuario usuario = await _context.Usuarios.FindAsync(idUsuario);
-            string correo = "";
-
-            usuario.Email = correo;
-
-            ViewData["Correo"] = correo;*/
-
             List<Producto> products = await _context.Productos.ToListAsync();
             return View(products);
         }
@@ -123,7 +115,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
             int? idUsu = int.Parse(idClaim);
             //obtenemos el usuario desde la base de datos
-            Usuario usuario = await _context.Usuarios.FindAsync(idUsu);
+            Usuario? usuario = await _context.Usuarios.FindAsync(idUsu);
             if(usuario == null) {
                 TempData["Message"] = "Primero debe Loguearse para realizar el pedido.";
                 TempData["MessageType"] = "warning";

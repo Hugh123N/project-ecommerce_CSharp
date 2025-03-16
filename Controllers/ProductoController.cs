@@ -5,6 +5,7 @@ using proyecto_ecommerce_.NET_MVC_.Models;
 
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
@@ -17,7 +18,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             _context =ecommerceNetContext;
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes =CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         // GET: ProductoController
         public async Task<IActionResult> Index(string buscar)
         {
@@ -49,9 +50,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             return View(producto);
         }
 
-		[Authorize(Roles = "admin")]
-		// GET: ProductoController/Create
-		public ActionResult Create()
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
+        // GET: ProductoController/Create
+        public ActionResult Create()
         {
             var categorias =  _context.Categorias.ToList();
             if (categorias != null) { 
@@ -61,9 +62,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         }
 
 
-		// POST: ProductoController/Create
-		[Authorize(Roles = "admin")]
-		[HttpPost]
+        // POST: ProductoController/Create
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(IFormFile img, Producto producto)
         {
@@ -122,9 +123,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
         }
 
-		// GET: ProductoController/Edit/5
-		[Authorize(Roles = "admin")]
-		public async Task<IActionResult> Edit(int id)
+        // GET: ProductoController/Edit/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
+        public async Task<IActionResult> Edit(int id)
         {
 
             if (id == null)
@@ -146,7 +147,7 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
         }
 
         // POST: ProductoController/Edit/5
-        [Authorize(Roles = "admin")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Producto producto, IFormFile img)
@@ -220,9 +221,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
             }
         }
 
-		// POST: ProductoController/Delete/5
-		[Authorize(Roles = "admin")]
-		[HttpPost]
+        // POST: ProductoController/Delete/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id, IFormCollection collection)
         {
@@ -262,8 +263,9 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
                 return RedirectToAction(nameof(Index));
         }
-   
+
         //GET: ProductoController/Estado/id
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "admin")]
         public async Task<IActionResult> Estado(int id)
         {
             try
