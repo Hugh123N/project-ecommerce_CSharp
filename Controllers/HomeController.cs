@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using proyecto_ecommerce_.NET_MVC_.ViewModels;
 
 namespace proyecto_ecommerce_.NET_MVC_.Controllers
 {
@@ -28,13 +29,35 @@ namespace proyecto_ecommerce_.NET_MVC_.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<Producto> products = await _context.Productos.ToListAsync();
-            return View(products);
+            List<Categoria> categorias = await _context.Categorias.ToListAsync();
+            List<Producto> productos = await _context.Productos.ToListAsync();
+
+            var viewModel = new IndexVM
+            {
+                categorias = categorias,
+                productos = productos
+            };
+
+            return View(viewModel);
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> ListProductxCategory(int id)
         {
-            return View();
+            List<Categoria> categorias = await _context.Categorias.ToListAsync();
+            List<Producto> productos = await _context.Productos.Where(p => p.CategoriaId == id).ToListAsync();
+            if (productos == null || productos.Count==0)
+            {
+                TempData["Message"] = "no hay productos en la categoria por ahora";
+                TempData["MessageType"] = "warning";
+                return RedirectToAction("Index", "Home");
+            }
+            var viewModel = new IndexVM
+            {
+                categorias = categorias,
+                productos = productos
+            };
+
+            return View("Index", viewModel);
         }
         public IActionResult Login()
         {

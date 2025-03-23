@@ -1,9 +1,10 @@
-﻿@model IEnumerable<proyecto_ecommerce_.NET_MVC_.Models.Producto>
+﻿@model proyecto_ecommerce_.NET_MVC_.ViewModels.IndexVM
 
 @{
     ViewData["Title"] = "Home Page";
     var i = 0;
-    foreach(var item in Model){
+    @foreach (var item in Model.productos)
+    {
         i++;
     }
 }
@@ -17,28 +18,25 @@
         </ol>
 
     </nav>
-    
+    <h5 class="mb-2">Categorias</h5>
     <!-- Fila de Categorías con desplazamiento -->
     <div class="category-container">
         <button class="arrow arrow-left" onclick="scrollCategories(-1)">&#9664;</button>
         <div class="category-wrapper">
-            <a class="category active" onclick="setActive(event)">Electrónica</a>
-            <a class="category" onclick="setActive(event)">Ropa</a>
-            <a class="category" onclick="setActive(event)">Hogar</a>
-            <a class="category" onclick="setActive(event)">Deportes</a>
-            <a class="category" onclick="setActive(event)">Belleza</a>
-            <a class="category" onclick="setActive(event)">Juguetes</a>
-            <a class="category" onclick="setActive(event)">Mascotas</a>
-            <a class="category" onclick="setActive(event)">Automotriz</a>
-            <a class="category" onclick="setActive(event)">Oficina</a>
+            <a class="category " onclick="setActive(event)" asp-action="Index">Todos</a>
+            @foreach(var categorias in Model.categorias){
+               <a class="category" onclick="setActive(event)" asp-controller="Home" asp-action="ListProductxCategory" asp-route-id="@categorias.Id">@categorias.Nombre</a>
+            }
         </div>
         <button class="arrow arrow-right" onclick="scrollCategories(1)">&#9654;</button>
     </div>
 
+    <!-- Título -->
+    <h5 class="mb-2"><span class="text-muted">(@i productos disponibles)</span></h5>
     <!-- Productos -->
     <div class="row">
         <!-- Tarjeta de producto (dinámica con un for loop) -->
-        @foreach(var item in Model){
+        @foreach(var item in Model.productos){
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card text-center">
                 <div class="image-container">
@@ -58,7 +56,6 @@
                                 <p style="color:red">Producto Agotado</p>
                             }
                         }
-                      
                 </div>
             </div>
         </div>
@@ -158,6 +155,7 @@
         padding: 10px 15px;
         background: #e9ecef;
         border-radius: 5px;
+        border:none;
         cursor: pointer;
         position: relative;
         transition: all 0.3s;
