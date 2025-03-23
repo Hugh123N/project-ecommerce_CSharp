@@ -1,9 +1,10 @@
-﻿@model IEnumerable<proyecto_ecommerce_.NET_MVC_.Models.Producto>
+﻿@model proyecto_ecommerce_.NET_MVC_.ViewModels.IndexVM
 
 @{
     ViewData["Title"] = "Home Page";
     var i = 0;
-    foreach(var item in Model){
+    @foreach (var item in Model.productos)
+    {
         i++;
     }
 }
@@ -17,15 +18,25 @@
         </ol>
 
     </nav>
+    <h5 class="mb-2">Categorias</h5>
+    <!-- Fila de Categorías con desplazamiento -->
+    <div class="category-container">
+        <button class="arrow arrow-left" onclick="scrollCategories(-1)">&#9664;</button>
+        <div class="category-wrapper">
+            <a class="category " onclick="setActive(event)" asp-action="Index">Todos</a>
+            @foreach(var categorias in Model.categorias){
+               <a class="category" onclick="setActive(event)" asp-controller="Home" asp-action="ListProductxCategory" asp-route-id="@categorias.Id">@categorias.Nombre</a>
+            }
+        </div>
+        <button class="arrow arrow-right" onclick="scrollCategories(1)">&#9654;</button>
+    </div>
 
     <!-- Título -->
-    <h5 class="mb-2">Tienda de ElectroShop <span class="text-muted">(@i productos disponibles)</span></h5>
-  
+    <h5 class="mb-2"><span class="text-muted">(@i productos disponibles)</span></h5>
     <!-- Productos -->
     <div class="row">
         <!-- Tarjeta de producto (dinámica con un for loop) -->
-        <!-- Simula un producto -->
-        @foreach(var item in Model){
+        @foreach(var item in Model.productos){
         <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
             <div class="card text-center">
                 <div class="image-container">
@@ -45,7 +56,6 @@
                                 <p style="color:red">Producto Agotado</p>
                             }
                         }
-                      
                 </div>
             </div>
         </div>
@@ -53,8 +63,39 @@
     </div>
 </div>
 
+<script>
+    let currentIndex = 0;
+    const visibleCategories = 6;
+    const categories = document.querySelectorAll('.category');
+    const wrapper = document.querySelector('.category-wrapper');
+    const leftArrow = document.querySelector('.arrow-left');
+    const rightArrow = document.querySelector('.arrow-right');
 
+    function updateArrows() {
+        leftArrow.style.display = currentIndex > 0 ? 'block' : 'none';
+        rightArrow.style.display = currentIndex + visibleCategories < categories.length ? 'block' : 'none';
+    }
 
+    function scrollCategories(direction) {
+        const categoryWidth = categories[0].offsetWidth + 10; // Ancho + margen
+        currentIndex += direction;
+
+        if (currentIndex < 0) currentIndex = 0;
+        if (currentIndex > categories.length - visibleCategories) {
+            currentIndex = categories.length - visibleCategories;
+        }
+
+        wrapper.style.transform = `translateX(${-currentIndex * categoryWidth}px)`;
+        updateArrows();
+    }
+
+    function setActive(event) {
+        document.querySelectorAll('.category').forEach(item => item.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    updateArrows();
+</script>
 
 <style>
     a{
@@ -89,5 +130,61 @@
         object-fit: cover; /* Hace que la imagen se adapte al cuadro recortando los bordes si es necesario */
         object-position: center; /* Centra la imagen dentro del cuadro */
         display: block; /* Evita el espacio extra en línea, si ocurre */
+    }
+
+    /* ------CATEGORIAS------------*/
+    .category-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        background: #f8f9fa;
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .category-wrapper {
+        display: flex;
+        transition: transform 0.3s ease-in-out;
+        gap: 10px;
+        padding: 0 40px; /* Espacio para las flechas */
+    }
+
+    .category {
+        flex: 0 0 auto;
+        padding: 10px 15px;
+        background: #e9ecef;
+        border-radius: 5px;
+        border:none;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s;
+    }
+
+    .category.active,
+    .category:hover {
+        background: #007bff;
+        color: white;
+    }
+
+    .arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.1);
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        z-index: 10;
+    }
+
+    .arrow-left {
+        left: 5px;
+        display: none;
+    }
+
+    .arrow-right {
+        right: 5px;
     }
 </style>
